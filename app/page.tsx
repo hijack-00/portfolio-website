@@ -16,7 +16,9 @@ export default function Home() {
     'Access granted...',
     'Welcome to the digital workspace of Aadil Khan.',
     'IT Consultant • Developer • Ethical Hacker',
-    'Building innovative solutions...'
+    'Building innovative solutions...',
+    'Applications Websites Everything...'
+
   ];
 
   const sections = ['home', 'about-me', 'skills', 'tools', 'projects', 'certifications', 'blog', 'contact'];
