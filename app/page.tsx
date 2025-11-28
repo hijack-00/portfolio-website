@@ -711,7 +711,7 @@ export default function Home() {
                   <div>
                     <p className="text-green-300 font-bold">LinkedIn</p>
                     <a
-                      href="https://linkedin.com/in/aadilkhan"
+                      href="https://linkedin.com/in/aadilkhan00"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green-400 hover:text-green-200 transition-colors duration-300"
