@@ -58,7 +58,7 @@ if errorlevel 1 (
 REM Use plink for automated SSH with password
 echo Connecting to Hostinger...
 echo Checking server status...
-plink -ssh -P 65002 -pw "HiJack@110" u284898047@145.79.210.122 "cd domains/chillingon.com/public_html/Aadil/ && (if [ ! -d .git ]; then echo 'Initializing server...'; rm -rf * 2>/dev/null; rm -rf .* 2>/dev/null; git clone https://github.com/hijack-00/portfolio-live.git .; else echo 'Pulling changes...'; git pull origin main; fi)"
+plink -batch -ssh -P 65002 -pw "HiJack@110" u284898047@145.79.210.122 "cd domains/chillingon.com/public_html/Aadil/ && (if [ ! -d .git ]; then echo 'Initializing server...'; rm -rf * 2>/dev/null; rm -rf .* 2>/dev/null; git clone https://github.com/hijack-00/portfolio-live.git .; else echo 'Pulling changes...'; git pull origin main; fi)"
 
 if errorlevel 1 (
     echo.
