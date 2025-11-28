@@ -48,7 +48,7 @@ git commit -m "Initial commit: Portfolio website"
 
 ```powershell
 # Add remote (replace with YOUR repository URL)
-git remote add origin https://github.com/YOUR_USERNAME/portfolio-website.git
+git remote add origin https://github.com/hijack-00/portfolio-website.git
 
 # Push to GitHub
 git branch -M main
