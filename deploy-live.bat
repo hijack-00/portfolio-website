@@ -39,6 +39,7 @@ echo.
 
 REM Push to portfolio-live repo
 echo [3/5] Pushing to GitHub (portfolio-live)...
+git branch -M main
 git push -u origin main --force
 if errorlevel 1 (
     echo ERROR: Push failed!
@@ -54,7 +55,7 @@ echo.
 REM Update live site via SSH
 echo [4/5] Updating live site via SSH...
 echo Connecting to Hostinger...
-ssh -p 65002 u284898047@145.79.210.122 "cd /public_html/aadil && git pull"
+ssh -p 65002 u284898047@145.79.210.122 "cd domains/chillingon.com/public_html/Aadil && git pull"
 if errorlevel 1 (
     echo ERROR: SSH command failed!
     echo.

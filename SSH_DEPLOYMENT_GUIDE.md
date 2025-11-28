@@ -67,7 +67,7 @@ ssh -p 65002 u284898047@145.79.210.122
 **On the server, run:**
 ```bash
 # Navigate to subdomain folder
-cd /public_html/aadil/
+cd domains/chillingon.com/public_html/Aadil/
 
 # Backup any existing files (if needed)
 # ls -la
@@ -233,7 +233,7 @@ cd ..
 # 3. Update live site
 ssh -p 65002 u284898047@145.79.210.122
 # Enter password: HiJack@110
-cd /public_html/aadil
+cd domains/chillingon.com/public_html/Aadil
 git pull
 exit
 ```
