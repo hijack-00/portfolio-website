@@ -12,9 +12,11 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState('home');
 
   const texts = [
-    'Booting system...',
+    'Initializing systems...',
     'Access granted...',
-    'Welcome to the digital profile of Aadil Khan.'
+    'Welcome to the digital workspace of Aadil Khan.',
+    'IT Consultant • Developer • Ethical Hacker',
+    'Building innovative solutions...'
   ];
 
   const sections = ['home', 'about-me', 'skills', 'tools', 'projects', 'certifications', 'blog', 'contact'];
@@ -41,7 +43,7 @@ export default function Home() {
 
     const type = () => {
       const currentText = texts[currentTextIndex];
-      
+
       if (!isDeleting) {
         if (typedText.length < currentText.length) {
           setTypedText(currentText.substring(0, typedText.length + 1));
@@ -69,7 +71,7 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100;
-      
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -122,11 +124,10 @@ export default function Home() {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`transition-all duration-300 hover:animate-pulse whitespace-nowrap ${
-                  activeSection === item.id
-                    ? 'text-green-200 border-b-2 border-green-400'
-                    : 'text-green-400 hover:text-green-200'
-                }`}
+                className={`transition-all duration-300 hover:animate-pulse whitespace-nowrap ${activeSection === item.id
+                  ? 'text-green-200 border-b-2 border-green-400'
+                  : 'text-green-400 hover:text-green-200'
+                  }`}
               >
                 [{item.label}]
               </button>
@@ -150,7 +151,7 @@ export default function Home() {
             </span>
           </div>
           <div className="mb-8 text-lg text-green-300 animate-pulse">
-            Ethical Hacker • Cybersecurity Enthusiast • App Developer
+            IT Consultant • Full-Stack Developer • Ethical Hacker • Software Solutions Expert
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
@@ -182,25 +183,25 @@ export default function Home() {
                 <span className="text-green-400">$</span> whoami
               </p>
               <p className="text-green-200">
-                I'm Aadil Khan, a self-taught beginner hacker passionate about cybersecurity, ethical hacking, and app development. My journey into the digital security realm began with curiosity about how systems work and how they can be protected.
+                I'm Aadil Khan, a versatile IT Consultant and Full-Stack Developer specializing in end-to-end technology solutions. From mobile apps to enterprise web applications, cybersecurity to e-commerce platforms, I deliver comprehensive digital solutions that drive business success.
               </p>
               <p className="text-green-300">
-                <span className="text-green-400">$</span> cat current_projects.log
+                <span className="text-green-400">$</span> cat expertise.txt
               </p>
               <p className="text-green-200">
-                Currently exploring penetration testing methodologies, system security analysis, and mobile application development. I'm working on personal projects that combine my interest in cybersecurity with practical app development skills.
+                My expertise spans <strong>Android & iOS app development</strong>, <strong>static/dynamic/e-commerce website development</strong>, <strong>WordPress & Shopify</strong> customization, <strong>backend API development</strong>, <strong>software solutions</strong>, <strong>domain hosting management</strong>, and <strong>ethical hacking/cybersecurity</strong>. I bring a security-first approach to every project I build.
               </p>
               <p className="text-green-300">
-                <span className="text-green-400">$</span> echo $LEARNING_PATH
+                <span className="text-green-400">$</span> echo $SERVICES
               </p>
               <p className="text-green-200">
-                Continuously learning ethical hacking techniques, network security principles, and modern development frameworks. My goal is to contribute to digital security while building innovative applications.
+                I provide custom web applications, mobile app development, e-commerce solutions, API development, security audits, WordPress/Shopify stores, hosting setup, and complete software development lifecycle management. Whether you need a startup MVP or enterprise-grade application, I've got you covered.
               </p>
               <p className="text-green-300">
                 <span className="text-green-400">$</span> sudo echo $MISSION
               </p>
               <p className="text-green-200">
-                To become a skilled ethical hacker who can identify vulnerabilities, strengthen security postures, and develop secure applications that protect users and organizations from digital threats.
+                To empower businesses with robust, secure, and scalable technology solutions. I combine development expertise with cybersecurity knowledge to build applications that not only meet business goals but are also protected against modern digital threats.
               </p>
             </div>
           </div>
@@ -215,14 +216,18 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Linux Basics', level: 'Intermediate', progress: 70 },
-              { name: 'Python Scripting', level: 'Intermediate', progress: 65 },
-              { name: 'Penetration Testing', level: 'Beginner', progress: 40 },
-              { name: 'App Development', level: 'Advanced', progress: 85 },
-              { name: 'Networking Concepts', level: 'Intermediate', progress: 60 },
-              { name: 'Web Security', level: 'Learning', progress: 35 },
-              { name: 'System Analysis', level: 'Beginner', progress: 45 },
-              { name: 'Mobile Security', level: 'Learning', progress: 30 }
+              { name: 'Web Development', level: 'Expert', progress: 95 },
+              { name: 'App Development (Android/iOS)', level: 'Advanced', progress: 90 },
+              { name: 'Backend/API Development', level: 'Expert', progress: 92 },
+              { name: 'WordPress/Shopify', level: 'Advanced', progress: 88 },
+              { name: 'E-commerce Solutions', level: 'Advanced', progress: 85 },
+              { name: 'Cybersecurity & Ethical Hacking', level: 'Advanced', progress: 80 },
+              { name: 'Database Management', level: 'Expert', progress: 90 },
+              { name: 'Cloud & Hosting', level: 'Advanced', progress: 85 },
+              { name: 'UI/UX Design', level: 'Intermediate', progress: 75 },
+              { name: 'Software Architecture', level: 'Advanced', progress: 87 },
+              { name: 'Version Control (Git)', level: 'Expert', progress: 93 },
+              { name: 'DevOps & Deployment', level: 'Advanced', progress: 82 }
             ].map((skill, index) => (
               <div
                 key={skill.name}
@@ -251,16 +256,20 @@ export default function Home() {
           <h2 className="text-4xl font-bold mb-8 text-green-400 animate-pulse">
             &gt; TOOLS_ARSENAL.bin
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Kali Linux', icon: 'ri-terminal-line', status: 'Active' },
-              { name: 'Burp Suite', icon: 'ri-bug-line', status: 'Learning' },
-              { name: 'Nmap', icon: 'ri-radar-line', status: 'Proficient' },
-              { name: 'Wireshark', icon: 'ri-pulse-line', status: 'Learning' },
-              { name: 'Metasploit', icon: 'ri-shield-line', status: 'Beginner' },
-              { name: 'Termux', icon: 'ri-smartphone-line', status: 'Active' },
-              { name: 'OWASP ZAP', icon: 'ri-search-line', status: 'Learning' },
-              { name: 'Netcat', icon: 'ri-links-line', status: 'Basic' }
+              { name: 'React/Next.js', icon: 'ri-reactjs-line', status: 'Expert' },
+              { name: 'Flutter/React Native', icon: 'ri-smartphone-line', status: 'Advanced' },
+              { name: 'Node.js/Express', icon: 'ri-code-s-slash-line', status: 'Expert' },
+              { name: 'WordPress', icon: 'ri-wordpress-line', status: 'Expert' },
+              { name: 'Shopify', icon: 'ri-shopping-bag-line', status: 'Advanced' },
+              { name: 'MongoDB/MySQL', icon: 'ri-database-2-line', status: 'Expert' },
+              { name: 'Git/GitHub', icon: 'ri-git-branch-line', status: 'Expert' },
+              // { name: 'Docker', icon: 'ri-terminal-box-line', status: 'Advanced' },
+              // { name: 'AWS/Hostinger', icon: 'ri-cloud-line', status: 'Advanced' },
+              { name: 'Banner/Logo Design', icon: 'ri-palette-line', status: 'Proficient' },
+              // { name: 'Burp Suite', icon: 'ri-bug-line', status: 'Advanced' },
+              { name: 'Postman/APIs', icon: 'ri-file-code-line', status: 'Expert' }
             ].map((tool, index) => (
               <div
                 key={tool.name}
@@ -288,45 +297,66 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Personal Pentest Lab',
-                description: 'Virtualized environment for practicing ethical hacking techniques and vulnerability assessment on various systems.',
-                tech: ['VirtualBox', 'Kali Linux', 'Metasploitable', 'DVWA'],
-                github: 'https://github.com/aadilkhan/pentest-lab',
+                title: 'E-commerce Platform',
+                description: 'Full-featured e-commerce solution with payment gateway integration, inventory management, and admin dashboard.',
+                tech: ['React', 'Node.js', 'MongoDB', 'Stripe', 'AWS'],
+                // github: 'https://github.com/hijack-00/ecommerce-platform',
+                status: 'Completed'
+              },
+              {
+                title: 'Mobile Food Delivery App',
+                description: 'Cross-platform mobile application with real-time order tracking, payment integration, and push notifications.',
+                tech: ['Flutter', 'Firebase', 'Google Maps API', 'Razorpay'],
+                // github: 'https://github.com/hijack-00/food-delivery-app',
                 status: 'Active'
               },
               {
-                title: 'Network Discovery Tool',
-                description: 'Python-based network reconnaissance script for discovering live hosts, open ports, and service enumeration.',
-                tech: ['Python', 'Nmap', 'Threading', 'JSON'],
-                github: 'https://github.com/aadilkhan/network-discovery',
+                title: 'WordPress Multi-Vendor Store',
+                description: 'Custom WordPress solution with WooCommerce for multi-vendor marketplace with commission system.',
+                tech: ['WordPress', 'WooCommerce', 'PHP', 'MySQL'],
+                // github: 'https://github.com/hijack-00/wp-multivendor',
                 status: 'Completed'
               },
               {
-                title: 'Secure Mobile App',
-                description: 'Flutter application demonstrating mobile security best practices and common vulnerability mitigations.',
-                tech: ['Flutter', 'Firebase', 'Encryption', 'OWASP Mobile'],
-                github: 'https://github.com/aadilkhan/secure-mobile-app',
-                status: 'In Progress'
+                title: 'RESTful API Development',
+                description: 'Scalable backend API for mobile app with JWT authentication, role-based access, and comprehensive documentation.',
+                tech: ['Node.js', 'Express', 'PostgreSQL', 'JWT', 'Swagger'],
+                github: 'https://github.com/hijack-00/3dMockupBackend',
+                status: 'Active'
               },
               {
-                title: 'Web Vuln Scanner',
-                description: 'Automated web application security scanner for detecting XSS, SQL injection, and other common vulnerabilities.',
-                tech: ['Python', 'Requests', 'BeautifulSoup', 'SQLAlchemy'],
-                github: 'https://github.com/aadilkhan/web-vuln-scanner',
+                title: 'Security Audit Tool',
+                description: 'Automated web application security scanner for detecting XSS, SQL injection, and CSRF vulnerabilities.',
+                tech: ['Python', 'Selenium', 'BeautifulSoup', 'OWASP ZAP'],
+                // github: 'https://github.com/hijack-00/security-audit-tool',
                 status: 'Beta'
               },
               {
-                title: 'Password Audit Tool',
-                description: 'Advanced password strength analyzer with breach database checking and security recommendations.',
-                tech: ['Python', 'Hashlib', 'Regex', 'HaveIBeenPwned API'],
-                github: 'https://github.com/aadilkhan/password-audit',
+                title: 'Shopify Custom Theme',
+                description: 'Premium Shopify theme with advanced customization options, mega menu, and conversion-optimized design.',
+                tech: ['Liquid', 'JavaScript', 'Shopify API', 'CSS3'],
+                // github: 'https://github.com/hijack-00/shopify-custom-theme',
                 status: 'Completed'
               },
               {
-                title: 'Digital Forensics Kit',
-                description: 'Collection of digital forensics scripts for evidence gathering, analysis, and reporting.',
-                tech: ['Python', 'Volatility', 'Autopsy', 'Sleuth Kit'],
-                github: 'https://github.com/aadilkhan/forensics-kit',
+                title: 'SaaS Dashboard Application',
+                description: 'Enterprise SaaS platform with subscription management, analytics dashboard, and multi-tenancy support.',
+                tech: ['Next.js', 'TypeScript', 'Tailwind', 'Prisma', 'Stripe'],
+                // github: 'https://github.com/hijack-00/saas-dashboard',
+                status: 'In Progress'
+              },
+              {
+                title: 'Real Estate Portal',
+                description: 'Dynamic property listing website with advanced search, virtual tours, and lead management system.',
+                tech: ['React', 'Node.js', 'MongoDB', 'Google Maps'],
+                // github: 'https://github.com/hijack-00/real-estate-portal',
+                status: 'Completed'
+              },
+              {
+                title: 'Social Media Management Tool',
+                description: 'Web application for scheduling posts, analytics tracking, and managing multiple social media accounts.',
+                tech: ['Vue.js', 'Laravel', 'MySQL', 'Social APIs'],
+                // github: 'https://github.com/hijack-00/social-media-tool',
                 status: 'Development'
               }
             ].map((project, index) => (
@@ -379,46 +409,67 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: 'TryHackMe',
-                description: 'Practical cybersecurity learning platform',
-                progress: 75,
+                title: 'Full-Stack Web Development',
+                description: 'Complete web development bootcamp certification',
+                progress: 100,
+                status: 'Completed',
+                topics: ['React', 'Node.js', 'MongoDB', 'REST APIs']
+              },
+              {
+                title: 'Mobile App Development',
+                description: 'Flutter & React Native certification program',
+                progress: 95,
+                status: 'Completed',
+                topics: ['Flutter', 'React Native', 'Firebase', 'Mobile UI/UX']
+              },
+              {
+                title: 'AWS Cloud Practitioner',
+                description: 'Amazon Web Services fundamentals and deployment',
+                progress: 70,
                 status: 'In Progress',
-                topics: ['Web Security', 'Network Security', 'Linux Fundamentals']
+                topics: ['EC2', 'S3', 'Lambda', 'RDS', 'CloudFormation']
               },
               {
-                title: 'Hack The Box',
-                description: 'Penetration testing labs and challenges',
-                progress: 45,
+                title: 'WordPress Development',
+                description: 'Advanced WordPress theme and plugin development',
+                progress: 100,
+                status: 'Completed',
+                topics: ['Theme Development', 'Plugin Development', 'WooCommerce', 'Gutenberg']
+              },
+              {
+                title: 'Shopify Expert',
+                description: 'Shopify theme customization and app development',
+                progress: 85,
                 status: 'Active',
-                topics: ['Penetration Testing', 'System Exploitation', 'CTF Challenges']
+                topics: ['Liquid', 'Shopify APIs', 'App Development', 'Store Optimization']
               },
               {
-                title: 'Google Cybersecurity',
-                description: 'Professional cybersecurity certificate program',
+                title: 'Ethical Hacking (CEH)',
+                description: 'Certified Ethical Hacker certification path',
                 progress: 60,
                 status: 'In Progress',
-                topics: ['Risk Management', 'Incident Response', 'Security Operations']
+                topics: ['Penetration Testing', 'Web Security', 'Network Security', 'Exploit Development']
               },
               {
-                title: 'CompTIA Security+',
-                description: 'Foundational cybersecurity certification',
-                progress: 30,
-                status: 'Preparing',
-                topics: ['Security Fundamentals', 'Threat Management', 'Cryptography']
+                title: 'Database Management',
+                description: 'SQL and NoSQL database administration',
+                progress: 90,
+                status: 'Completed',
+                topics: ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis']
               },
               {
-                title: 'OWASP Top 10',
-                description: 'Web application security knowledge',
+                title: 'DevOps Fundamentals',
+                description: 'CI/CD pipelines and deployment automation',
+                progress: 75,
+                status: 'Active',
+                topics: ['Docker', 'GitHub Actions', 'CI/CD', 'Server Management']
+              },
+              {
+                title: 'UI/UX Design',
+                description: 'User interface and experience design principles',
                 progress: 80,
                 status: 'Completed',
-                topics: ['Web Vulnerabilities', 'Secure Coding', 'Application Security']
-              },
-              {
-                title: 'CEH (Preparing)',
-                description: 'Certified Ethical Hacker certification',
-                progress: 15,
-                status: 'Planning',
-                topics: ['Ethical Hacking', 'Penetration Testing', 'Security Assessment']
+                topics: ['Figma', 'User Research', 'Wireframing', 'Responsive Design']
               }
             ].map((cert, index) => (
               <div
@@ -469,46 +520,67 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Getting Started with Kali Linux',
+                title: 'Building Scalable REST APIs with Node.js',
                 date: '2024-01-15',
-                category: 'Tutorial',
-                preview: 'Complete guide to setting up your first penetration testing environment with Kali Linux.',
-                readTime: '8 min read'
-              },
-              {
-                title: 'Top 10 Python Scripts for Ethical Hackers',
-                date: '2024-01-10',
-                category: 'Scripts',
-                preview: 'Essential Python scripts every ethical hacker should have in their toolkit.',
+                category: 'Backend',
+                preview: 'Complete guide to creating production-ready RESTful APIs with Express, authentication, and best practices.',
                 readTime: '12 min read'
               },
               {
-                title: 'Mobile App Security: Common Vulnerabilities',
-                date: '2024-01-05',
-                category: 'Security',
-                preview: 'Exploring the most common security flaws in mobile applications and how to prevent them.',
-                readTime: '15 min read'
-              },
-              {
-                title: 'Network Reconnaissance with Nmap',
-                date: '2024-01-01',
-                category: 'Tools',
-                preview: 'Advanced Nmap techniques for network discovery and vulnerability scanning.',
+                title: 'Flutter vs React Native: Which to Choose?',
+                date: '2024-01-10',
+                category: 'Mobile Dev',
+                preview: 'In-depth comparison of cross-platform mobile frameworks to help you make the right choice for your project.',
                 readTime: '10 min read'
               },
               {
-                title: 'Web Application Testing Methodology',
+                title: 'WordPress Security: Essential Best Practices',
+                date: '2024-01-05',
+                category: 'Security',
+                preview: 'Comprehensive security checklist for WordPress sites to protect against common vulnerabilities and attacks.',
+                readTime: '15 min read'
+              },
+              {
+                title: 'E-commerce Development: From Concept to Launch',
+                date: '2024-01-01',
+                category: 'E-commerce',
+                preview: 'Step-by-step guide to building a complete e-commerce platform with payment integration and inventory management.',
+                readTime: '18 min read'
+              },
+              {
+                title: 'Shopify Liquid: Advanced Customization',
                 date: '2023-12-28',
-                category: 'Methodology',
-                preview: 'Step-by-step approach to testing web applications for security vulnerabilities.',
+                category: 'Shopify',
+                preview: 'Master Shopify theme development with advanced Liquid templating techniques and custom functionality.',
+                readTime: '14 min read'
+              },
+              {
+                title: 'Deploying Full-Stack Apps to AWS',
+                date: '2023-12-25',
+                category: 'DevOps',
+                preview: 'Complete deployment guide for hosting React + Node.js applications on AWS with auto-scaling and SSL.',
                 readTime: '20 min read'
               },
               {
-                title: 'Building Your First CTF Lab',
+                title: 'Database Design for Modern Web Apps',
                 date: '2023-12-20',
-                category: 'Lab Setup',
-                preview: 'How to create your own Capture The Flag environment for practicing ethical hacking.',
-                readTime: '18 min read'
+                category: 'Database',
+                preview: 'Best practices for designing efficient, scalable databases for web applications with MongoDB and PostgreSQL.',
+                readTime: '16 min read'
+              },
+              {
+                title: 'Web Application Security Checklist',
+                date: '2023-12-15',
+                category: 'Security',
+                preview: 'Essential security measures every web developer should implement to protect applications and user data.',
+                readTime: '12 min read'
+              },
+              {
+                title: 'Optimizing WordPress for Performance',
+                date: '2023-12-10',
+                category: 'WordPress',
+                preview: 'Proven techniques to dramatically improve WordPress site speed and achieve 90+ PageSpeed scores.',
+                readTime: '14 min read'
               }
             ].map((post, index) => (
               <div
@@ -537,10 +609,10 @@ export default function Home() {
           <div className="text-center mt-12">
             <div className="bg-black/60 border border-green-400/40 p-8 rounded-none backdrop-blur-sm">
               <p className="text-green-300 text-lg">
-                <span className="text-green-400">$</span> echo "Blog posts coming soon..."
+                <span className="text-green-400">$</span> echo "More articles coming soon..."
               </p>
               <p className="text-green-400 mt-2">
-                Stay tuned for in-depth articles on ethical hacking, cybersecurity tools, and penetration testing techniques.
+                Stay tuned for in-depth tutorials on web development, mobile apps, e-commerce, cybersecurity, and software solutions.
               </p>
             </div>
           </div>
@@ -625,7 +697,7 @@ export default function Home() {
                   <div>
                     <p className="text-green-300 font-bold">GitHub</p>
                     <a
-                      href="https://github.com/aadilkhan"
+                      href="https://github.com/hijack-00"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green-400 hover:text-green-200 transition-colors duration-300"
@@ -654,7 +726,7 @@ export default function Home() {
                   <span className="text-green-400">$</span> cat availability.txt
                 </p>
                 <p className="text-green-400 text-sm">
-                  Available for cybersecurity collaborations, ethical hacking projects, and app development opportunities.
+                  Available for web/app development projects, e-commerce solutions, WordPress/Shopify customization, API development, security audits, and IT consulting services.
                 </p>
                 <p className="text-green-300 text-sm mt-4">
                   <span className="text-green-400">$</span> echo "Response time: 24-48 hours"
@@ -669,10 +741,10 @@ export default function Home() {
       <footer className="py-8 px-4 border-t border-green-400/40">
         <div className="container mx-auto text-center">
           <p className="text-green-400 animate-pulse">
-            © 2024 Aadil Khan | Ethical Hacker & Cybersecurity Enthusiast
+            © 2024 Aadil Khan | IT Consultant • Developer • Ethical Hacker
           </p>
           <p className="text-green-500 text-sm mt-2">
-            "In the world of zeros and ones, security is the ultimate challenge."
+            "Building secure, scalable solutions for the digital world."
           </p>
         </div>
       </footer>

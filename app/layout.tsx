@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aadil Khan | Ethical Hacker & Cybersecurity Portfolio",
-  description: "Personal portfolio of Aadil Khan - Ethical Hacker, Cybersecurity Enthusiast, and App Developer. Explore projects, skills, and certifications.",
+  title: "Aadil Khan | IT Consultant • Developer • Ethical Hacker",
+  description: "Full-stack IT Consultant and Developer specializing in Web/App Development, Cybersecurity, E-commerce Solutions, Backend APIs, WordPress/Shopify, and Software Solutions. Expert in Android/iOS development and ethical hacking.",
 };
 
 export default function RootLayout({
