@@ -17,7 +17,8 @@ export default function Home() {
     'Welcome to the digital workspace of Aadil Khan.',
     'IT Consultant • Developer • Ethical Hacker',
     'Building innovative solutions...',
-    'Applications Websites Everything...'
+    'Applications Websites Everything...',
+    'Connect With Me...'
 
   ];
 
