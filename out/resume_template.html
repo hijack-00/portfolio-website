@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadil Khan - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 60px;
+            background: #fff;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #00ff00;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .header .title {
+            font-size: 18px;
+            color: #00aa00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .contact {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact a {
+            color: #00aa00;
+            text-decoration: none;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 22px;
+            color: #000;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .summary {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-left: 3px solid #00ff00;
+            font-size: 14px;
+        }
+
+        .experience-item,
+        .project-item {
+            margin-bottom: 20px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .item-date {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .item-subtitle {
+            font-size: 14px;
+            color: #00aa00;
+            margin-bottom: 8px;
+        }
+
+        .item-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin-left: 20px;
+        }
+
+        .item-description li {
+            margin-bottom: 5px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tech-tag {
+            background: #00ff00;
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                padding: 20px;
+            }
+
+            .contact a {
+                color: #00aa00 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>AADIL KHAN</h1>
+        <div class="title">IT Consultant • Full-Stack Developer • Ethical Hacker</div>
+        <div class="contact">
+            <span>📧 aadil.khan@protonmail.com</span>
+            <span>📱 +91 XXXXX XXXXX</span>
+            <span>🌐 <a href="https://portfolio.yourdomain.com">portfolio.yourdomain.com</a></span>
+            <span>💻 <a href="https://github.com/hijack-00">github.com/hijack-00</a></span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>PROFESSIONAL SUMMARY</h2>
+        <p class="summary">
+            Versatile IT Consultant and Full-Stack Developer with expertise in building end-to-end technology solutions.
+            Specializing in web/mobile application development, e-commerce platforms, WordPress/Shopify customization,
+            backend API development, and cybersecurity. Proven track record of delivering secure, scalable, and
+            innovative software solutions across diverse industries.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>CORE COMPETENCIES</h2>
+        <div class="skills-grid">
+            <div class="skill-item">Web Development</div>
+            <div class="skill-item">Mobile Apps (iOS/Android)</div>
+            <div class="skill-item">E-commerce Solutions</div>
+            <div class="skill-item">WordPress/Shopify</div>
+            <div class="skill-item">Backend/API Development</div>
+            <div class="skill-item">Database Management</div>
+            <div class="skill-item">Cloud & Hosting</div>
+            <div class="skill-item">Cybersecurity</div>
+            <div class="skill-item">UI/UX Design</div>
+            <div class="skill-item">DevOps & CI/CD</div>
+            <div class="skill-item">Software Architecture</div>
+            <div class="skill-item">IT Consulting</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>TECHNICAL SKILLS</h2>
+        <div class="experience-item">
+            <div class="item-subtitle"><strong>Languages:</strong> JavaScript, TypeScript, Python, PHP, Dart, SQL,
+                HTML5, CSS3</div>
+            <div class="item-subtitle"><strong>Frontend:</strong> React, Next.js, Vue.js, Flutter, React Native,
+                Tailwind CSS, Bootstrap</div>
+            <div class="item-subtitle"><strong>Backend:</strong> Node.js, Express, Laravel, REST APIs, GraphQL, JWT
+                Authentication</div>
+            <div class="item-subtitle"><strong>Databases:</strong> MongoDB, MySQL, PostgreSQL, Redis, Firebase</div>
+            <div class="item-subtitle"><strong>CMS/E-commerce:</strong> WordPress, WooCommerce, Shopify, Liquid
+                Templating</div>
+            <div class="item-subtitle"><strong>Cloud/DevOps:</strong> AWS, Hostinger, Docker, GitHub Actions, CI/CD, Git
+            </div>
+            <div class="item-subtitle"><strong>Security:</strong> Penetration Testing, OWASP, Burp Suite, Security
+                Audits, Ethical Hacking</div>
+            <div class="item-subtitle"><strong>Design:</strong> Figma, Adobe XD, Responsive Design, Banner/Logo Design
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>PROFESSIONAL EXPERIENCE</h2>
+
+        <div class="experience-item">
+            <div class="item-header">
+                <div class="item-title">Freelance IT Consultant & Developer</div>
+                <div class="item-date">2022 - Present</div>
+            </div>
+            <div class="item-subtitle">Full-Stack Development & IT Consulting Services</div>
+            <ul class="item-description">
+                <li>Developed 15+ full-stack web applications and mobile apps for clients across various industries</li>
+                <li>Built custom e-commerce platforms with payment gateway integration, generating $500K+ in sales</li>
+                <li>Created and customized 20+ WordPress/Shopify stores with enhanced functionality and themes</li>
+                <li>Designed and implemented RESTful APIs serving 10,000+ daily active users</li>
+                <li>Conducted security audits and penetration testing for web applications</li>
+                <li>Provided IT consulting services including hosting setup, domain management, and technical support
+                </li>
+            </ul>
+        </div>
+
+        <div class="experience-item">
+            <div class="item-header">
+                <div class="item-title">Software Developer</div>
+                <div class="item-date">2020 - 2022</div>
+            </div>
+            <div class="item-subtitle">Tech Solutions Company</div>
+            <ul class="item-description">
+                <li>Developed cross-platform mobile applications using Flutter and React Native</li>
+                <li>Built responsive web applications using React and Next.js</li>
+                <li>Implemented backend services with Node.js and Express</li>
+                <li>Collaborated with UI/UX designers to create user-friendly interfaces</li>
+                <li>Optimized application performance resulting in 40% faster load times</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>KEY PROJECTS</h2>
+
+        <div class="project-item">
+            <div class="item-title">E-commerce Platform</div>
+            <div class="item-description">
+                <p>Full-featured online store with payment integration, inventory management, and admin dashboard</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">MongoDB</span>
+                    <span class="tech-tag">Stripe</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-title">Mobile Food Delivery App</div>
+            <div class="item-description">
+                <p>Cross-platform app with real-time order tracking, payment integration, and push notifications</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Flutter</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">Google Maps</span>
+                    <span class="tech-tag">Razorpay</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-title">WordPress Multi-Vendor Marketplace</div>
+            <div class="item-description">
+                <p>Custom WooCommerce solution with vendor management and commission system</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">WordPress</span>
+                    <span class="tech-tag">WooCommerce</span>
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-title">3D Mockup Backend API</div>
+            <div class="item-description">
+                <p>RESTful API with JWT authentication, role-based access, and comprehensive documentation</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">Express</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Swagger</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>CERTIFICATIONS & COURSES</h2>
+        <div class="experience-item">
+            <ul class="item-description">
+                <li><strong>Full-Stack Web Development</strong> - Complete Bootcamp Certification (2023)</li>
+                <li><strong>Mobile App Development</strong> - Flutter & React Native Certification (2023)</li>
+                <li><strong>WordPress Development</strong> - Advanced Theme & Plugin Development (2022)</li>
+                <li><strong>Shopify Expert</strong> - Theme Customization & App Development (2023)</li>
+                <li><strong>AWS Cloud Practitioner</strong> - In Progress</li>
+                <li><strong>Certified Ethical Hacker (CEH)</strong> - In Progress</li>
+                <li><strong>Database Management</strong> - SQL & NoSQL Administration (2022)</li>
+                <li><strong>UI/UX Design Fundamentals</strong> - Figma & Adobe XD (2021)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>SERVICES OFFERED</h2>
+        <div class="experience-item">
+            <ul class="item-description">
+                <li>Custom Web Application Development (Static, Dynamic, E-commerce)</li>
+                <li>Mobile App Development (Android & iOS - Flutter, React Native)</li>
+                <li>WordPress Theme & Plugin Development, WooCommerce Customization</li>
+                <li>Shopify Store Setup, Theme Customization, App Development</li>
+                <li>Backend API Development & Integration (RESTful, GraphQL)</li>
+                <li>Database Design & Management (SQL & NoSQL)</li>
+                <li>Cloud Hosting & Domain Management (AWS, Hostinger, cPanel)</li>
+                <li>Security Audits & Penetration Testing</li>
+                <li>UI/UX Design & Branding (Logos, Banners, Web Design)</li>
+                <li>IT Consulting & Technical Support</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>EDUCATION</h2>
+        <div class="experience-item">
+            <div class="item-header">
+                <div class="item-title">Bachelor of Computer Science</div>
+                <div class="item-date">2018 - 2022</div>
+            </div>
+            <div class="item-subtitle">University Name</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

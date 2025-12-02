@@ -20,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aadil Khan | IT Consultant • Developer • Ethical Hacker",
-  description: "Full-stack IT Consultant and Developer specializing in Web/App Development, Cybersecurity, E-commerce Solutions, Backend APIs, WordPress/Shopify, and Software Solutions. Expert in Android/iOS development and ethical hacking.",
+  title: "Aadil Khan | IT Consultant • Full-Stack Developer",
+  description: "Full-stack IT Consultant and Developer specializing in Web/App Development, E-commerce Solutions, Backend APIs, WordPress/Shopify, and Software Solutions. Expert in Android/iOS development and modern web technologies.",
 };
 
 export default function RootLayout({

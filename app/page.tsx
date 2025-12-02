@@ -10,15 +10,16 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [matrixCode, setMatrixCode] = useState('');
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const texts = [
     'Initializing systems...',
     'Access granted...',
     'Welcome to the digital workspace of Aadil Khan.',
-    'IT Consultant • Developer • Ethical Hacker',
-    'Building innovative solutions...',
-    'Applications Websites Everything...',
-    'Connect With Me...'
+    'IT Consultant • Full-Stack Developer',
+    'Building innovative solutions...'
+    // 'Applications Websites Everything...',
+    // 'Connect With Me...'
 
   ];
 
@@ -107,13 +108,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Animated Header */}
+      {/* Mobile-Responsive Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-green-400/40">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-xl font-bold text-green-400 animate-pulse">
+        <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="text-base sm:text-lg md:text-xl font-bold text-green-400 animate-pulse">
             <span className="text-green-300">&gt;</span> AADIL.KHAN
           </div>
-          <div className="flex space-x-6">
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-3 lg:space-x-6 text-sm lg:text-base">
             {[
               { id: 'home', label: 'Home' },
               { id: 'about-me', label: 'About Me' },
@@ -136,7 +139,55 @@ export default function Home() {
               </button>
             ))}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-green-400 hover:text-green-200 transition-colors p-2 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </nav>
+
+        {/* Mobile Menu Dropdown */}
+        <div
+          className={`md:hidden bg-black/98 border-t border-green-400/40 transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+            }`}
+        >
+          <div className="container mx-auto px-4 py-4 flex flex-col space-y-3">
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'about-me', label: 'About Me' },
+              { id: 'skills', label: 'Skills' },
+              { id: 'tools', label: 'Tools' },
+              { id: 'projects', label: 'Projects' },
+              { id: 'certifications', label: 'Certifications' },
+              { id: 'blog', label: 'Blog' },
+              { id: 'contact', label: 'Contact' }
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  scrollToSection(item.id);
+                  setMobileMenuOpen(false);
+                }}
+                className={`text-left py-2 px-4 border-l-2 transition-all duration-300 ${activeSection === item.id
+                  ? 'text-green-200 border-green-400 bg-green-400/10'
+                  : 'text-green-400 border-green-400/40 hover:border-green-400 hover:bg-green-400/5'
+                  }`}
+              >
+                {`> ${item.label.toUpperCase()}`}
+              </button>
+            ))}
+          </div>
+        </div>
       </header>
 
       {/* Home Section */}
@@ -154,7 +205,7 @@ export default function Home() {
             </span>
           </div>
           <div className="mb-8 text-lg text-green-300 animate-pulse">
-            IT Consultant • Full-Stack Developer • Ethical Hacker • Software Solutions Expert
+            IT Consultant • Full-Stack Developer • Software Solutions Expert
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
@@ -186,13 +237,13 @@ export default function Home() {
                 <span className="text-green-400">$</span> whoami
               </p>
               <p className="text-green-200">
-                I'm Aadil Khan, a versatile IT Consultant and Full-Stack Developer specializing in end-to-end technology solutions. From mobile apps to enterprise web applications, cybersecurity to e-commerce platforms, I deliver comprehensive digital solutions that drive business success.
+                I'm Aadil Khan, a versatile IT Consultant and Full-Stack Developer specializing in end-to-end technology solutions. From mobile apps to enterprise web applications, e-commerce to custom software platforms, I deliver comprehensive digital solutions that drive business success.
               </p>
               <p className="text-green-300">
                 <span className="text-green-400">$</span> cat expertise.txt
               </p>
               <p className="text-green-200">
-                My expertise spans <strong>Android & iOS app development</strong>, <strong>static/dynamic/e-commerce website development</strong>, <strong>WordPress & Shopify</strong> customization, <strong>backend API development</strong>, <strong>software solutions</strong>, <strong>domain hosting management</strong>, and <strong>ethical hacking/cybersecurity</strong>. I bring a security-first approach to every project I build.
+                My expertise spans <strong>Android & iOS app development</strong>, <strong>static/dynamic/e-commerce website development</strong>, <strong>WordPress & Shopify</strong> customization, <strong>backend API development</strong>, <strong>software solutions</strong>, and <strong>domain hosting management</strong>. I bring a quality-first approach to every project I build.
               </p>
               <p className="text-green-300">
                 <span className="text-green-400">$</span> echo $SERVICES
@@ -204,7 +255,7 @@ export default function Home() {
                 <span className="text-green-400">$</span> sudo echo $MISSION
               </p>
               <p className="text-green-200">
-                To empower businesses with robust, secure, and scalable technology solutions. I combine development expertise with cybersecurity knowledge to build applications that not only meet business goals but are also protected against modern digital threats.
+                To empower businesses with robust, efficient, and scalable technology solutions. I combine development expertise with modern best practices to build applications that meet business goals and deliver exceptional user experiences.
               </p>
             </div>
           </div>
@@ -224,7 +275,7 @@ export default function Home() {
               { name: 'Backend/API Development', level: 'Expert', progress: 92 },
               { name: 'WordPress/Shopify', level: 'Advanced', progress: 88 },
               { name: 'E-commerce Solutions', level: 'Advanced', progress: 85 },
-              { name: 'Cybersecurity & Ethical Hacking', level: 'Advanced', progress: 80 },
+              { name: 'Software Architecture', level: 'Advanced', progress: 87 },
               { name: 'Database Management', level: 'Expert', progress: 90 },
               { name: 'Cloud & Hosting', level: 'Advanced', progress: 85 },
               { name: 'UI/UX Design', level: 'Intermediate', progress: 75 },
@@ -447,7 +498,7 @@ export default function Home() {
                 topics: ['Liquid', 'Shopify APIs', 'App Development', 'Store Optimization']
               },
               {
-                title: 'Ethical Hacking (CEH)',
+                title: 'React & Next.js Mastery',
                 description: 'Certified Ethical Hacker certification path',
                 progress: 60,
                 status: 'In Progress',
@@ -615,7 +666,7 @@ export default function Home() {
                 <span className="text-green-400">$</span> echo "More articles coming soon..."
               </p>
               <p className="text-green-400 mt-2">
-                Stay tuned for in-depth tutorials on web development, mobile apps, e-commerce, cybersecurity, and software solutions.
+                Stay tuned for in-depth tutorials on web development, mobile apps, e-commerce, APIs, and software solutions.
               </p>
             </div>
           </div>
