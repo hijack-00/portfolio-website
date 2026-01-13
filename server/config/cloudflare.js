@@ -4,10 +4,10 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 // Configure Cloudflare R2 client
 const s3Client = new S3Client({
     region: 'auto',
-    endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
+    endpoint: process.env.R2_ENDPOINT,
     credentials: {
-        accessKeyId: process.env.CLOUDFLARE_ACCESS_KEY_ID,
-        secretAccessKey: process.env.CLOUDFLARE_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
     },
 });
 
@@ -16,7 +16,7 @@ const uploadToR2 = async (file, folder = 'uploads') => {
     const fileName = `${folder}/${Date.now()}-${file.originalname}`;
 
     const uploadParams = {
-        Bucket: process.env.CLOUDFLARE_BUCKET_NAME,
+        Bucket: process.env.R2_BUCKET_NAME,
         Key: fileName,
         Body: file.buffer,
         ContentType: file.mimetype,
@@ -26,7 +26,7 @@ const uploadToR2 = async (file, folder = 'uploads') => {
         await s3Client.send(new PutObjectCommand(uploadParams));
 
         // Return the public URL
-        const publicUrl = `${process.env.CLOUDFLARE_PUBLIC_URL}/${fileName}`;
+        const publicUrl = `${process.env.R2_PUBLIC_URL}/${fileName}`;
         return publicUrl;
     } catch (error) {
         console.error('Error uploading to R2:', error);
@@ -38,10 +38,10 @@ const uploadToR2 = async (file, folder = 'uploads') => {
 const deleteFromR2 = async (fileUrl) => {
     try {
         // Extract the key from the URL
-        const key = fileUrl.replace(`${process.env.CLOUDFLARE_PUBLIC_URL}/`, '');
+        const key = fileUrl.replace(`${process.env.R2_PUBLIC_URL}/`, '');
 
         const deleteParams = {
-            Bucket: process.env.CLOUDFLARE_BUCKET_NAME,
+            Bucket: process.env.R2_BUCKET_NAME,
             Key: key,
         };
 
@@ -57,7 +57,7 @@ const deleteFromR2 = async (fileUrl) => {
 const getSignedUrlFromR2 = async (key, expiresIn = 3600) => {
     try {
         const command = new GetObjectCommand({
-            Bucket: process.env.CLOUDFLARE_BUCKET_NAME,
+            Bucket: process.env.R2_BUCKET_NAME,
             Key: key,
         });
 

@@ -17,8 +17,8 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(cors({
     origin: [
-        process.env.FRONTEND_URL || 'http://localhost:3000',
-        process.env.ADMIN_URL || 'http://localhost:3001'
+        process.env.FRONTEND_URL || 'https://aadil.chillingon.com/',
+        process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app/login'
     ],
     credentials: true
 }));
