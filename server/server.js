@@ -18,7 +18,7 @@ app.use(morgan('dev'));
 app.use(cors({
     origin: [
         process.env.FRONTEND_URL || 'https://aadil.chillingon.com/',
-        process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app/login'
+        process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app/'
     ],
     credentials: true
 }));
