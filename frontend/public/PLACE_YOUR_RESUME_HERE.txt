@@ -1,0 +1,27 @@
+📄 RESUME INSTRUCTIONS
+======================
+
+To add your resume to the portfolio:
+
+1. Create your resume as a PDF file
+2. Name it exactly: Aadil_Khan_Resume.pdf
+3. Place it in this folder (public/)
+4. Delete this instruction file
+5. Run: npm run build
+6. Deploy: .\deploy.bat
+
+Your resume will be downloadable from the homepage!
+
+---
+
+TEMPORARY PLACEHOLDER:
+A sample resume has been created for you as a placeholder.
+Replace it with your actual resume before deploying!
+
+---
+
+FILE LOCATION:
+📁 d:\Development\generated\hacker_theme\public\Aadil_Khan_Resume.pdf
+
+DOWNLOAD LINK (already configured):
+The "Download Resume" button on your homepage is already set up to download this file.

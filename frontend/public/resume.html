@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aadil Khan | Flutter & Full-Stack Developer</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #020617;
+      --muted: #475569;
+      --primary: #2563eb;
+      --border: #e5e7eb;
+      --glow: rgba(37, 99, 235, 0.15);
+    }
+
+    body.dark {
+      --bg: #020617;
+      --card: rgba(2, 6, 23, 0.7);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #22d3ee;
+      --border: #1e293b;
+      --glow: rgba(34, 211, 238, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, var(--glow), transparent 60%), var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 60px;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 70px;
+    }
+
+    .name {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .role {
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .contact {
+      text-align: right;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .contact a:hover {
+      color: var(--primary) !important;
+      text-decoration: underline !important;
+    }
+
+    .toggle {
+      margin-top: 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--primary);
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* SECTIONS */
+    section {
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.9s ease;
+    }
+
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 55px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      border-radius: 6px;
+    }
+
+    p {
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      transition: all 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.01);
+      box-shadow: 0 30px 70px var(--glow);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .card span {
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-top: 12px;
+    }
+
+    ul li {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    /* SKILLS */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .skill {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 25px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* DOWNLOAD BUTTON */
+    .download-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 32px var(--glow), 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 40px var(--glow), 0 8px 24px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, #3b82f6, var(--primary));
+    }
+
+    .download-btn svg {
+      width: 18px;
+      height: 18px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-3px);
+      }
+    }
+
+    body.dark .download-btn {
+      background: linear-gradient(135deg, var(--primary), #0891b2);
+      color: #020617;
+    }
+
+    body.dark .download-btn:hover {
+      background: linear-gradient(135deg, #67e8f9, var(--primary));
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .contact {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Download Button -->
+  <a href="/Aadil_Resume_updated_Dec.pdf" download="Aadil_Khan_Resume.pdf" type="application/pdf" class="download-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+    </svg>
+    Download PDF
+  </a>
+
+  <div class="container">
+
+    <header>
+      <div>
+        <div class="name">Aadil Khan</div>
+        <div class="role">Flutter Developer | Full-Stack Developer</div>
+        <button class="toggle" onclick="toggleTheme()">⚡ Toggle Cyber Mode</button>
+      </div>
+      <div class="contact">
+        📞 <a href="tel:+918924958707" style="color: inherit; text-decoration: none; transition: color 0.3s;">+91
+          8924958707</a><br />
+        📧 <a href="mailto:khan.aadil8299@gmail.com"
+          style="color: inherit; text-decoration: none; transition: color 0.3s;">khan.aadil8299@gmail.com</a><br />
+        🌐 <a href="https://aadil.chillingon.com" target="_blank" rel="noopener noreferrer"
+          style="color: inherit; text-decoration: none; transition: color 0.3s;">aadil.chillingon.com</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Professional Summary</h2>
+      <p>
+        Mobile & Full-Stack Developer with 1.5+ years of experience building production-ready Flutter applications.
+        Worked across AI platforms, B2B E-commerce, social media, finance systems, admin dashboards,
+        and performance-heavy 3D applications.
+      </p>
+    </section>
+
+    <section>
+      <h2>Flagship Projects</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Coch AI</h3>
+          <span>AI Employee Training Platform</span>
+          <ul>
+            <li>AI-powered learning & assessment system</li>
+            <li>Role-based dashboards & performance analytics</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Anibhavi Creation</h3>
+          <span>B2B Jeans E-Commerce App</span>
+          <ul>
+            <li>Bulk ordering, cart & business workflows</li>
+            <li>Real manufacturing use-case</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Anibhavi Admin</h3>
+          <span>Admin Panel Application</span>
+          <ul>
+            <li>Order, inventory & user management</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Social & Communication Apps</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Whispr</h3><span>Anonymous Chat App</span>
+          <ul>
+            <li>Invite-based chat system</li>
+            <li>End-chat auto deletion</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Kyuon</h3><span>Instagram-like Social App</span>
+          <ul>
+            <li>Feeds, profiles & interactions</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Luvnestor</h3><span>Dating Application</span>
+          <ul>
+            <li>User matching & profiles</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>MuslimMalikRishte</h3><span>Matrimonial Platform</span>
+          <ul>
+            <li>Community-focused matchmaking</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Business, Utility & Finance</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Listify</h3><span>Service Booking App</span>
+          <ul>
+            <li>Service discovery & scheduling</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Influish</h3><span>Influencer Hiring Platform</span>
+          <ul>
+            <li>Creator discovery & hiring flow</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>EMC / KVS</h3><span>EMI Extension App</span>
+          <ul>
+            <li>Finance & repayment workflows</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Creative & Experimental</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>3D Mockup</h3><span>3D Customization App</span>
+          <ul>
+            <li>WebView + Three.js rendering</li>
+            <li>Performance optimized</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>CricVision</h3><span>Cricket Score App</span>
+          <ul>
+            <li>Live match data</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Portfolio Website</h3><span>Next.js Cyber Theme</span>
+          <ul>
+            <li>Personal branding & showcase</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>GitHub Repositories</h2>
+      <div class="grid">
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>3D Mockup Backend</h3><span>Node.js • Express • MongoDB</span>
+          <ul>
+            <li>Backend API for 3D model customization</li>
+            <li><a href="https://github.com/hijack-00/3dMockupBackend" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>3D Model Web</h3><span>Three.js • React • WebGL</span>
+          <ul>
+            <li>Interactive 3D model viewer & editor</li>
+            <li><a href="https://github.com/hijack-00/3dModelWeb" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Anibhavi Creation</h3><span>B2B E-Commerce Platform</span>
+          <ul>
+            <li>Jeans manufacturing bulk ordering</li>
+            <li><a href="https://github.com/hijack-00/anibhaviCreation" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Anibhavi Admin</h3><span>Admin Panel</span>
+          <ul>
+            <li>Order & inventory management</li>
+            <li><a href="https://github.com/hijack-00/anibahviadmin" target="_blank" style="color: var(--primary);">View
+                on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Portfolio Live</h3><span>Next.js • React</span>
+          <ul>
+            <li>Live production portfolio website</li>
+            <li><a href="https://github.com/hijack-00/portfolio-live" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Portfolio Website</h3><span>Cyber Theme Portfolio</span>
+          <ul>
+            <li>Cyber theme with animations</li>
+            <li><a href="https://github.com/hijack-00/portfolio-website" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>3D Mockup Clothing App</h3><span>Flutter • ARCore</span>
+          <ul>
+            <li>3D clothing visualization with AR</li>
+            <li><a href="https://github.com/devopsamman/3DMockupapp-For-Clothing-" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Speed X Agrotech</h3><span>Agricultural Platform</span>
+          <ul>
+            <li>Farmer-focused tech solutions</li>
+            <li><a href="https://github.com/hijack-00/speedxagrotech" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Study Junction</h3><span>Educational Platform</span>
+          <ul>
+            <li>Online learning & course platform</li>
+            <li><a href="https://github.com/hijack-00/studyjunction" target="_blank" style="color: var(--primary);">View
+                on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Listify</h3><span>Service Booking Platform</span>
+          <ul>
+            <li>Local service discovery & booking</li>
+            <li><a href="https://github.com/hijack-00/listify" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Kyuon Social Media</h3><span>Social Networking App</span>
+          <ul>
+            <li>Instagram-like social platform</li>
+            <li><a href="https://github.com/devopsamman/Kyuon-social-media-app" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>3D Model Live Web</h3><span>Real-time 3D Platform</span>
+          <ul>
+            <li>Collaborative 3D editing</li>
+            <li><a href="https://github.com/hijack-00/3dmodelLiveWeb" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>KVS</h3><span>EMI Management App</span>
+          <ul>
+            <li>Finance & repayment workflows</li>
+            <li><a href="https://github.com/hijack-00/kvs" target="_blank" style="color: var(--primary);">View on GitHub
+                →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>AOT Encyclopedia</h3><span>Reference App</span>
+          <ul>
+            <li>Comprehensive encyclopedia app</li>
+            <li><a href="https://github.com/hijack-00/aotencyclopedia" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>URMS (New)</h3><span>University Management</span>
+          <ul>
+            <li>Academic resource management</li>
+            <li><a href="https://github.com/Digi-India-Solutions/URMS-NEW-" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Loan App</h3><span>Digital Lending Platform</span>
+          <ul>
+            <li>Automated loan approval system</li>
+            <li><a href="https://github.com/hijack-00/loanApp" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Sorted Backend</h3><span>Task Management API</span>
+          <ul>
+            <li>RESTful API for task organization</li>
+            <li><a href="https://github.com/hijack-00/sorted_Backend" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>WEC</h3><span>Event Calendar Platform</span>
+          <ul>
+            <li>Web-based event scheduling</li>
+            <li><a href="https://github.com/Digi-India-Solutions/wec" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>KVS Total Care</h3><span>Care Management System</span>
+          <ul>
+            <li>Customer tracking & scheduling</li>
+            <li><a href="https://github.com/Digi-India-Solutions/kvs-total-care" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Whisp r</h3><span>Anonymous Chat App</span>
+          <ul>
+            <li>Secure anonymous messaging</li>
+            <li><a href="https://github.com/hijack-00/whispr" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Jeans Final</h3><span>E-Commerce Platform</span>
+          <ul>
+            <li>Production jeans marketplace</li>
+            <li><a href="https://github.com/Digi-India-Solutions/jeans-final" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Luvnestor Professional</h3><span>Dating Platform</span>
+          <ul>
+            <li>Enhanced matching algorithms</li>
+            <li><a href="https://github.com/Digi-India-Solutions/luvnestor-professional" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>Luvnestor App</h3><span>Relationship App</span>
+          <ul>
+            <li>User profiles & matching</li>
+            <li><a href="https://github.com/Digi-India-Solutions/luvnestor-app" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>URMS Latest</h3><span>University System v2</span>
+          <ul>
+            <li>Improved resource management</li>
+            <li><a href="https://github.com/Digi-India-Solutions/urms-latest" target="_blank"
+                style="color: var(--primary);">View on GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>To-Do List</h3><span>Task Manager</span>
+          <ul>
+            <li>Priority & deadline tracking</li>
+            <li><a href="https://github.com/hijack-00/to-do-list" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <!-- Screenshot Placeholder -->
+          <div
+            style="background: rgba(34, 211, 238, 0.05); border: 1px dashed var(--border); height: 120px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+            <p style="color: var(--muted); font-size: 12px;">📷 Screenshot Placeholder</p>
+          </div>
+          <h3>2048 Game</h3><span>Puzzle Game</span>
+          <ul>
+            <li>Classic 2048 implementation</li>
+            <li><a href="https://github.com/hijack-00/2048-game" target="_blank" style="color: var(--primary);">View on
+                GitHub →</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Technical Skills</h2>
+      <div class="skills">
+        <div class="skill">Flutter</div>
+        <div class="skill">Dart</div>
+        <div class="skill">Firebase</div>
+        <div class="skill">REST APIs</div>
+        <div class="skill">Next.js</div>
+        <div class="skill">Node.js</div>
+        <div class="skill">MongoDB</div>
+        <div class="skill">Git & GitHub</div>
+      </div>
+    </section>
+
+    <footer>
+      🔒 Many projects are hosted in private repositories due to client confidentiality.
+      Detailed demos available on request.
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme',
+        document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach(sec => observer.observe(sec));
+  </script>
+
+</body>
+
+</html>
