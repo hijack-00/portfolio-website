@@ -36,15 +36,19 @@ export default function Home() {
 
   // Fetch data from API
   useEffect(() => {
-    // Auto-detect environment: localhost in dev, live server in production
-    const isLocalhost = typeof window !== 'undefined' && (
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.hostname.includes('localhost')
-    );
+    // TEMPORARY: Using live backend because local MongoDB is empty
+    // Uncomment below for auto-detection when local DB has data
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL ||
-      (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
+    // const isLocalhost = typeof window !== 'undefined' && (
+    //   window.location.hostname === 'localhost' ||
+    //   window.location.hostname === '127.0.0.1' ||
+    //   window.location.hostname.includes('localhost')
+    // );
+    // const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+    //   (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
+
+    // Always use live backend for now
+    const API_URL = 'https://portfolio-website-i30p.onrender.com/api';
 
     console.log('Fetching data from API:', API_URL);
 
@@ -166,14 +170,8 @@ export default function Home() {
     const formData = new FormData(form);
 
     try {
-      // Save to database first
-      const isLocalhost = typeof window !== 'undefined' && (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1' ||
-        window.location.hostname.includes('localhost')
-      );
-      const API_URL = process.env.NEXT_PUBLIC_API_URL ||
-        (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
+      // Save to database first (using live backend)
+      const API_URL = 'https://portfolio-website-i30p.onrender.com/api';
       const contactData = {
         name: formData.get('from_name'),
         email: formData.get('from_email'),
@@ -936,8 +934,8 @@ export default function Home() {
                 </div>
 
                 {/* Main Screenshot */}
-                {selectedProject.screenshot && (
-                  <div className="mb-8 border border-green-400/30 rounded-none overflow-hidden">
+                {selectedProject.screenshot ? (
+                  <div className="mb-8 border border-green-400/30 rounded-none overflow-hidden bg-green-900/10">
                     <img
                       src={
                         selectedProject.screenshot.startsWith('http')
@@ -946,7 +944,22 @@ export default function Home() {
                       }
                       alt={selectedProject.title}
                       className="w-full h-auto"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent && !parent.querySelector('.error-placeholder')) {
+                          parent.innerHTML = '<div class="error-placeholder w-full h-64 flex items-center justify-center"><div class="text-center p-8"><i class="ri-image-line text-6xl text-green-400/50 mb-4 block"></i><p class="text-green-400/60">Screenshot not available</p></div></div>';
+                        }
+                      }}
                     />
+                  </div>
+                ) : (
+                  <div className="mb-8 border border-green-400/30 rounded-none overflow-hidden bg-green-900/10 h-64 flex items-center justify-center">
+                    <div className="text-center p-8">
+                      <i className="ri-image-line text-6xl text-green-400/50 mb-4 block"></i>
+                      <p className="text-green-400/60">No screenshot uploaded</p>
+                    </div>
                   </div>
                 )}
 
@@ -1062,7 +1075,7 @@ export default function Home() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {selectedProject.additionalScreenshots.map((screenshot: string, idx: number) => (
-                        <div key={idx} className="border border-green-400/30 rounded-none overflow-hidden">
+                        <div key={idx} className="border border-green-400/30 rounded-none overflow-hidden bg-green-900/10 min-h-[200px] flex items-center justify-center">
                           <img
                             src={
                               screenshot.startsWith('http')
@@ -1071,6 +1084,14 @@ export default function Home() {
                             }
                             alt={`${selectedProject.title} screenshot ${idx + 1}`}
                             className="w-full h-auto"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent && !parent.querySelector('.error-placeholder')) {
+                                parent.innerHTML = '<div class="error-placeholder w-full h-48 flex items-center justify-center"><div class="text-center p-4"><i class="ri-image-line text-4xl text-green-400/50 mb-2 block"></i><p class="text-xs text-green-400/60">Image unavailable</p></div></div>';
+                              }
+                            }}
                           />
                         </div>
                       ))}

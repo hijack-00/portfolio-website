@@ -11,9 +11,8 @@ router.get('/', async (req, res) => {
         let profile = await Profile.findOne();
 
         if (!profile) {
-            // Create default profile if it doesn't exist
-            profile = new Profile();
-            await profile.save();
+            // Return null instead of creating empty profile
+            return res.json(null);
         }
 
         res.json(profile);

@@ -11,8 +11,7 @@ router.get('/', async (req, res) => {
         let about = await About.findOne();
 
         if (!about) {
-            about = new About();
-            await about.save();
+            return res.json(null);
         }
 
         res.json(about);

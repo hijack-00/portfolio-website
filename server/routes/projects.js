@@ -66,6 +66,15 @@ router.post('/', auth, upload.single('screenshot'), async (req, res) => {
             projectData.features = projectData.features.split(',').map(f => f.trim()).filter(f => f);
         }
 
+        // Handle additionalScreenshots array (might come as JSON string)
+        if (typeof projectData.additionalScreenshots === 'string' && projectData.additionalScreenshots) {
+            try {
+                projectData.additionalScreenshots = JSON.parse(projectData.additionalScreenshots);
+            } catch (e) {
+                projectData.additionalScreenshots = [];
+            }
+        }
+
         // Upload screenshot if provided
         if (req.file) {
             const screenshotUrl = await uploadToR2(req.file, 'screenshots');
@@ -96,6 +105,15 @@ router.put('/:id', auth, upload.single('screenshot'), async (req, res) => {
         // Handle features array
         if (typeof projectData.features === 'string') {
             projectData.features = projectData.features.split(',').map(f => f.trim()).filter(f => f);
+        }
+
+        // Handle additionalScreenshots array
+        if (typeof projectData.additionalScreenshots === 'string' && projectData.additionalScreenshots) {
+            try {
+                projectData.additionalScreenshots = JSON.parse(projectData.additionalScreenshots);
+            } catch (e) {
+                projectData.additionalScreenshots = [];
+            }
         }
 
         // Find existing project

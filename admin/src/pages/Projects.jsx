@@ -33,6 +33,7 @@ export default function Projects() {
     const [techInput, setTechInput] = useState('');
     const [featureInput, setFeatureInput] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
+    const [additionalFiles, setAdditionalFiles] = useState([]);
 
     useEffect(() => {
         fetchProjects();
@@ -87,6 +88,11 @@ export default function Projects() {
         setSelectedFile(e.target.files[0]);
     };
 
+    const handleAdditionalFilesChange = (e) => {
+        const files = Array.from(e.target.files);
+        setAdditionalFiles(files);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -112,8 +118,36 @@ export default function Projects() {
             submitData.append('order', formData.order);
             submitData.append('isActive', formData.isActive);
 
+            // Upload main screenshot
             if (selectedFile) {
                 submitData.append('screenshot', selectedFile);
+            }
+
+            // Upload additional screenshots
+            if (additionalFiles.length > 0) {
+                const additionalUrls = [];
+                toast.info('Uploading additional screenshots...');
+
+                for (const file of additionalFiles) {
+                    const fileData = new FormData();
+                    fileData.append('file', file);
+                    fileData.append('folder', 'screenshots');
+
+                    const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/upload`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: fileData
+                    });
+
+                    if (uploadResponse.ok) {
+                        const result = await uploadResponse.json();
+                        additionalUrls.push(result.url);
+                    }
+                }
+
+                submitData.append('additionalScreenshots', JSON.stringify(additionalUrls));
             }
 
             if (editingProject) {
@@ -200,6 +234,7 @@ export default function Projects() {
         setTechInput('');
         setFeatureInput('');
         setSelectedFile(null);
+        setAdditionalFiles([]);
     };
 
     const handleCloseModal = () => {
@@ -580,24 +615,221 @@ export default function Projects() {
                                     <i className="ri-image-line"></i> Media & Screenshots
                                 </h3>
 
+
                                 <div className="form-group">
-                                    <label>Main Screenshot</label>
+                                    <label>Main Screenshot (for project cards)</label>
+
+                                    {/* Drag and Drop Zone */}
+                                    <div
+                                        onDragOver={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--green-400)';
+                                            e.currentTarget.style.backgroundColor = 'var(--green-900-10)';
+                                        }}
+                                        onDragLeave={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--border)';
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                        }}
+                                        onDrop={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--border)';
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+                                            if (files.length > 0) {
+                                                setSelectedFile(files[0]); // Only take first file
+                                            }
+                                        }}
+                                        style={{
+                                            border: '2px dashed var(--border)',
+                                            borderRadius: '4px',
+                                            padding: '20px',
+                                            textAlign: 'center',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            marginBottom: '12px'
+                                        }}
+                                        onClick={() => document.getElementById('main-screenshot-input').click()}
+                                    >
+                                        <i className="ri-upload-cloud-line" style={{ fontSize: '36px', color: 'var(--green-400)', marginBottom: '8px' }}></i>
+                                        <p style={{ color: 'var(--text-primary)', marginBottom: '4px', fontSize: '14px' }}>
+                                            <strong>Drag & drop main screenshot</strong> or click to browse
+                                        </p>
+                                        <small style={{ color: 'var(--text-secondary)' }}>
+                                            This will be shown on project cards
+                                        </small>
+                                    </div>
+
                                     <input
+                                        id="main-screenshot-input"
                                         type="file"
                                         className="form-control"
                                         accept="image/*"
                                         onChange={handleFileChange}
+                                        style={{ display: 'none' }}
                                     />
-                                    {formData.screenshot && (
-                                        <div style={{ marginTop: '8px' }}>
-                                            <small style={{ color: 'var(--text-secondary)' }}>
-                                                Current: {formData.screenshot}
+
+                                    {/* Image Preview */}
+                                    {selectedFile && (
+                                        <div style={{ marginTop: '12px', marginBottom: '12px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                                <strong style={{ color: 'var(--green-400)', fontSize: '14px' }}>
+                                                    Preview
+                                                </strong>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-danger"
+                                                    style={{ padding: '4px 12px', fontSize: '12px' }}
+                                                    onClick={() => setSelectedFile(null)}
+                                                >
+                                                    <i className="ri-delete-bin-line"></i> Remove
+                                                </button>
+                                            </div>
+                                            <div style={{ border: '1px solid var(--border)', borderRadius: '4px', overflow: 'hidden', maxWidth: '300px' }}>
+                                                <img
+                                                    src={URL.createObjectURL(selectedFile)}
+                                                    alt="Main screenshot preview"
+                                                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                                                />
+                                                <div style={{ padding: '8px', backgroundColor: 'var(--bg-secondary)', fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                                    <i className="ri-file-line"></i> {selectedFile.name}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Current Screenshot (from database) */}
+                                    {!selectedFile && formData.screenshot && (
+                                        <div style={{ marginTop: '12px', padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px' }}>
+                                            <small style={{ color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+                                                <i className="ri-information-line"></i> Current screenshot uploaded
+                                            </small>
+                                            <small style={{ color: 'var(--green-400)', fontSize: '11px', wordBreak: 'break-all' }}>
+                                                {formData.screenshot.substring(formData.screenshot.lastIndexOf('/') + 1)}
                                             </small>
                                         </div>
                                     )}
-                                    <small style={{ color: 'var(--text-secondary)', fontSize: '12px', marginTop: '4px', display: 'block' }}>
-                                        Upload main project screenshot (shown on project cards)
-                                    </small>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Additional Screenshots (for details page)</label>
+
+                                    {/* Drag and Drop Zone */}
+                                    <div
+                                        onDragOver={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--green-400)';
+                                            e.currentTarget.style.backgroundColor = 'var(--green-900-10)';
+                                        }}
+                                        onDragLeave={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--border)';
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                        }}
+                                        onDrop={(e) => {
+                                            e.preventDefault();
+                                            e.currentTarget.style.borderColor = 'var(--border)';
+                                            e.currentTarget.style.backgroundColor = 'transparent';
+                                            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+                                            if (files.length > 0) {
+                                                setAdditionalFiles(prev => [...prev, ...files]);
+                                            }
+                                        }}
+                                        style={{
+                                            border: '2px dashed var(--border)',
+                                            borderRadius: '4px',
+                                            padding: '24px',
+                                            textAlign: 'center',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            marginBottom: '16px'
+                                        }}
+                                        onClick={() => document.getElementById('additional-screenshots-input').click()}
+                                    >
+                                        <i className="ri-upload-cloud-2-line" style={{ fontSize: '48px', color: 'var(--green-400)', marginBottom: '8px' }}></i>
+                                        <p style={{ color: 'var(--text-primary)', marginBottom: '4px' }}>
+                                            <strong>Drag & drop images here</strong> or click to browse
+                                        </p>
+                                        <small style={{ color: 'var(--text-secondary)' }}>
+                                            Upload multiple screenshots for project details gallery
+                                        </small>
+                                    </div>
+
+                                    <input
+                                        id="additional-screenshots-input"
+                                        type="file"
+                                        className="form-control"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleAdditionalFilesChange}
+                                        style={{ display: 'none' }}
+                                    />
+
+                                    {/* Image Previews */}
+                                    {additionalFiles.length > 0 && (
+                                        <div style={{ marginTop: '16px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                                <strong style={{ color: 'var(--green-400)' }}>
+                                                    {additionalFiles.length} image(s) ready to upload
+                                                </strong>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-danger"
+                                                    style={{ padding: '4px 12px', fontSize: '12px' }}
+                                                    onClick={() => setAdditionalFiles([])}
+                                                >
+                                                    <i className="ri-delete-bin-line"></i> Clear All
+                                                </button>
+                                            </div>
+                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '12px' }}>
+                                                {additionalFiles.map((file, idx) => (
+                                                    <div key={idx} style={{ position: 'relative', border: '1px solid var(--border)', borderRadius: '4px', overflow: 'hidden' }}>
+                                                        <img
+                                                            src={URL.createObjectURL(file)}
+                                                            alt={`Preview ${idx + 1}`}
+                                                            style={{ width: '100%', height: '120px', objectFit: 'cover' }}
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setAdditionalFiles(prev => prev.filter((_, i) => i !== idx))}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '4px',
+                                                                right: '4px',
+                                                                background: 'rgba(0, 0, 0, 0.7)',
+                                                                border: 'none',
+                                                                borderRadius: '50%',
+                                                                width: '24px',
+                                                                height: '24px',
+                                                                cursor: 'pointer',
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'center',
+                                                                color: '#fff'
+                                                            }}
+                                                        >
+                                                            <i className="ri-close-line"></i>
+                                                        </button>
+                                                        <div style={{ padding: '4px', fontSize: '10px', color: 'var(--text-secondary)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                            {file.name}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Current Screenshots (from database) */}
+                                    {formData.additionalScreenshots && formData.additionalScreenshots.length > 0 && (
+                                        <div style={{ marginTop: '16px', padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px' }}>
+                                            <small style={{ color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                                                <i className="ri-information-line"></i> Currently uploaded: {formData.additionalScreenshots.length} screenshot(s)
+                                            </small>
+                                            <small style={{ color: 'var(--text-secondary)', fontSize: '11px' }}>
+                                                Note: New uploads will replace existing screenshots
+                                            </small>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="form-group">
