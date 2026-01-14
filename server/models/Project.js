@@ -9,6 +9,11 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // Detailed description for project details page
+    longDescription: {
+        type: String,
+        default: ''
+    },
     tech: [{
         type: String
     }],
@@ -32,6 +37,46 @@ const projectSchema = new mongoose.Schema({
     screenshot: {
         type: String
     },
+    // Additional screenshots for details page
+    additionalScreenshots: [{
+        type: String
+    }],
+    // Detailed project information
+    workDone: {
+        type: String,
+        default: ''
+    },
+    duration: {
+        type: String,
+        default: ''
+    },
+    completionTime: {
+        type: String,
+        default: ''
+    },
+    role: {
+        type: String,
+        default: ''
+    },
+    client: {
+        type: String,
+        default: ''
+    },
+    teamSize: {
+        type: String,
+        default: ''
+    },
+    challenges: {
+        type: String,
+        default: ''
+    },
+    learnings: {
+        type: String,
+        default: ''
+    },
+    features: [{
+        type: String
+    }],
     order: {
         type: Number,
         default: 0

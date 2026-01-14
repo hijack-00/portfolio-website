@@ -58,7 +58,12 @@ router.post('/', auth, upload.single('screenshot'), async (req, res) => {
 
         // Handle tech array (might come as string from form)
         if (typeof projectData.tech === 'string') {
-            projectData.tech = projectData.tech.split(',').map(t => t.trim());
+            projectData.tech = projectData.tech.split(',').map(t => t.trim()).filter(t => t);
+        }
+
+        // Handle features array (might come as string from form)
+        if (typeof projectData.features === 'string') {
+            projectData.features = projectData.features.split(',').map(f => f.trim()).filter(f => f);
         }
 
         // Upload screenshot if provided
@@ -85,7 +90,12 @@ router.put('/:id', auth, upload.single('screenshot'), async (req, res) => {
 
         // Handle tech array
         if (typeof projectData.tech === 'string') {
-            projectData.tech = projectData.tech.split(',').map(t => t.trim());
+            projectData.tech = projectData.tech.split(',').map(t => t.trim()).filter(t => t);
+        }
+
+        // Handle features array
+        if (typeof projectData.features === 'string') {
+            projectData.features = projectData.features.split(',').map(f => f.trim()).filter(f => f);
         }
 
         // Find existing project

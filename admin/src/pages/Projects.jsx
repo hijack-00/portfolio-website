@@ -10,16 +10,28 @@ export default function Projects() {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
+        longDescription: '',
         tech: [],
         github: '',
         link: '',
         linkType: 'website',
         status: 'Active',
         screenshot: '',
+        additionalScreenshots: [],
+        workDone: '',
+        duration: '',
+        completionTime: '',
+        role: '',
+        client: '',
+        teamSize: '',
+        challenges: '',
+        learnings: '',
+        features: [],
         order: 0,
         isActive: true
     });
     const [techInput, setTechInput] = useState('');
+    const [featureInput, setFeatureInput] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
@@ -54,6 +66,23 @@ export default function Projects() {
         });
     };
 
+    const addFeature = () => {
+        if (featureInput.trim() && !formData.features.includes(featureInput.trim())) {
+            setFormData({
+                ...formData,
+                features: [...formData.features, featureInput.trim()]
+            });
+            setFeatureInput('');
+        }
+    };
+
+    const removeFeature = (index) => {
+        setFormData({
+            ...formData,
+            features: formData.features.filter((_, i) => i !== index)
+        });
+    };
+
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
@@ -65,11 +94,21 @@ export default function Projects() {
 
             submitData.append('title', formData.title);
             submitData.append('description', formData.description);
+            submitData.append('longDescription', formData.longDescription || '');
             submitData.append('tech', formData.tech.join(','));
             submitData.append('github', formData.github);
             submitData.append('link', formData.link);
             submitData.append('linkType', formData.linkType);
             submitData.append('status', formData.status);
+            submitData.append('workDone', formData.workDone || '');
+            submitData.append('duration', formData.duration || '');
+            submitData.append('completionTime', formData.completionTime || '');
+            submitData.append('role', formData.role || '');
+            submitData.append('client', formData.client || '');
+            submitData.append('teamSize', formData.teamSize || '');
+            submitData.append('challenges', formData.challenges || '');
+            submitData.append('learnings', formData.learnings || '');
+            submitData.append('features', formData.features.join(','));
             submitData.append('order', formData.order);
             submitData.append('isActive', formData.isActive);
 
@@ -98,12 +137,23 @@ export default function Projects() {
         setFormData({
             title: project.title,
             description: project.description,
+            longDescription: project.longDescription || '',
             tech: project.tech || [],
             github: project.github,
             link: project.link,
             linkType: project.linkType,
             status: project.status,
             screenshot: project.screenshot,
+            additionalScreenshots: project.additionalScreenshots || [],
+            workDone: project.workDone || '',
+            duration: project.duration || '',
+            completionTime: project.completionTime || '',
+            role: project.role || '',
+            client: project.client || '',
+            teamSize: project.teamSize || '',
+            challenges: project.challenges || '',
+            learnings: project.learnings || '',
+            features: project.features || [],
             order: project.order,
             isActive: project.isActive
         });
@@ -127,16 +177,28 @@ export default function Projects() {
         setFormData({
             title: '',
             description: '',
+            longDescription: '',
             tech: [],
             github: '',
             link: '',
             linkType: 'website',
             status: 'Active',
             screenshot: '',
+            additionalScreenshots: [],
+            workDone: '',
+            duration: '',
+            completionTime: '',
+            role: '',
+            client: '',
+            teamSize: '',
+            challenges: '',
+            learnings: '',
+            features: [],
             order: 0,
             isActive: true
         });
         setTechInput('');
+        setFeatureInput('');
         setSelectedFile(null);
     };
 
@@ -204,7 +266,7 @@ export default function Projects() {
                                 </td>
                                 <td>
                                     <span className={`badge ${project.status === 'Deployed' || project.status === 'Active' ? 'badge-success' :
-                                            project.status === 'Development' ? 'badge-warning' : 'badge-secondary'
+                                        project.status === 'Development' ? 'badge-warning' : 'badge-secondary'
                                         }`}>
                                         {project.status}
                                     </span>
@@ -241,7 +303,7 @@ export default function Projects() {
 
             {showModal && (
                 <div className="modal-overlay" onClick={handleCloseModal}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px', maxHeight: '90vh', overflowY: 'auto' }}>
                         <div className="modal-header">
                             <h2>{editingProject ? 'Edit Project' : 'Add New Project'}</h2>
                             <button className="close-btn" onClick={handleCloseModal}>
@@ -250,6 +312,11 @@ export default function Projects() {
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className="modal-body">
+                                {/* Basic Information */}
+                                <h3 style={{ color: 'var(--green-400)', marginBottom: '16px', borderBottom: '2px solid var(--border)', paddingBottom: '8px' }}>
+                                    <i className="ri-file-list-line"></i> Basic Information
+                                </h3>
+
                                 <div className="form-group">
                                     <label>Project Title *</label>
                                     <input
@@ -262,16 +329,28 @@ export default function Projects() {
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Description *</label>
+                                    <label>Short Description (for cards) *</label>
                                     <textarea
                                         className="form-control"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                        rows={3}
+                                        rows={2}
                                         required
                                     />
                                 </div>
 
+                                <div className="form-group">
+                                    <label>Detailed Description (for details page)</label>
+                                    <textarea
+                                        className="form-control"
+                                        value={formData.longDescription}
+                                        onChange={(e) => setFormData({ ...formData, longDescription: e.target.value })}
+                                        rows={6}
+                                        placeholder="Enter detailed project description, objectives, and overview..."
+                                    />
+                                </div>
+
+                                {/* Tech Stack */}
                                 <div className="form-group">
                                     <label>Technologies Used</label>
                                     <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -303,6 +382,7 @@ export default function Projects() {
                                     </div>
                                 </div>
 
+                                {/* Links */}
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                     <div className="form-group">
                                         <label>GitHub URL *</label>
@@ -367,8 +447,141 @@ export default function Projects() {
                                     </div>
                                 </div>
 
+                                {/* Detailed Information */}
+                                <h3 style={{ color: 'var(--green-400)', marginTop: '32px', marginBottom: '16px', borderBottom: '2px solid var(--border)', paddingBottom: '8px' }}>
+                                    <i className="ri-file-info-line"></i> Detailed Information
+                                </h3>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                    <div className="form-group">
+                                        <label>Role/Position</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.role}
+                                            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                                            placeholder="e.g., Full Stack Developer"
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Client/Company</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.client}
+                                            onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+                                            placeholder="e.g., Personal Project or Client Name"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+                                    <div className="form-group">
+                                        <label>Team Size</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.teamSize}
+                                            onChange={(e) => setFormData({ ...formData, teamSize: e.target.value })}
+                                            placeholder="e.g., Solo or 1-5"
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Duration</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.duration}
+                                            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                                            placeholder="e.g., 3 months"
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Completion Time</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData.completionTime}
+                                            onChange={(e) => setFormData({ ...formData, completionTime: e.target.value })}
+                                            placeholder="e.g., Ongoing or 120 hours"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="form-group">
-                                    <label>Screenshot</label>
+                                    <label>Work Done</label>
+                                    <textarea
+                                        className="form-control"
+                                        value={formData.workDone}
+                                        onChange={(e) => setFormData({ ...formData, workDone: e.target.value })}
+                                        rows={4}
+                                        placeholder="Describe your responsibilities and what you built..."
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Key Features</label>
+                                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={featureInput}
+                                            onChange={(e) => setFeatureInput(e.target.value)}
+                                            placeholder="Enter a key feature"
+                                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFeature())}
+                                        />
+                                        <button type="button" className="btn btn-secondary" onClick={addFeature}>
+                                            <i className="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                        {formData.features.map((feature, index) => (
+                                            <span key={index} className="badge badge-info" style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '4px',
+                                                cursor: 'pointer',
+                                                padding: '6px 10px'
+                                            }} onClick={() => removeFeature(index)}>
+                                                {feature}
+                                                <i className="ri-close-line"></i>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Challenges Faced</label>
+                                    <textarea
+                                        className="form-control"
+                                        value={formData.challenges}
+                                        onChange={(e) => setFormData({ ...formData, challenges: e.target.value })}
+                                        rows={3}
+                                        placeholder="Describe technical challenges and how you solved them..."
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Learnings & Takeaways</label>
+                                    <textarea
+                                        className="form-control"
+                                        value={formData.learnings}
+                                        onChange={(e) => setFormData({ ...formData, learnings: e.target.value })}
+                                        rows={3}
+                                        placeholder="What did you learn from this project?"
+                                    />
+                                </div>
+
+                                {/* Media */}
+                                <h3 style={{ color: 'var(--green-400)', marginTop: '32px', marginBottom: '16px', borderBottom: '2px solid var(--border)', paddingBottom: '8px' }}>
+                                    <i className="ri-image-line"></i> Media & Screenshots
+                                </h3>
+
+                                <div className="form-group">
+                                    <label>Main Screenshot</label>
                                     <input
                                         type="file"
                                         className="form-control"
@@ -383,7 +596,7 @@ export default function Projects() {
                                         </div>
                                     )}
                                     <small style={{ color: 'var(--text-secondary)', fontSize: '12px', marginTop: '4px', display: 'block' }}>
-                                        Note: File upload requires Cloudflare R2 configuration. You can add path manually for now.
+                                        Upload main project screenshot (shown on project cards)
                                     </small>
                                 </div>
 

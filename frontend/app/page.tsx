@@ -24,6 +24,7 @@ export default function Home() {
   const [projects, setProjects] = useState<any[]>([]);
   const [certifications, setCertifications] = useState<any[]>([]);
   const [blogs, setBlogs] = useState<any[]>([]);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
 
   const texts = profile?.typingTexts || [
     'Initializing systems...',
@@ -35,7 +36,15 @@ export default function Home() {
 
   // Fetch data from API
   useEffect(() => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-website-i30p.onrender.com/api';
+    // Auto-detect environment: localhost in dev, live server in production
+    const isLocalhost = typeof window !== 'undefined' && (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.includes('localhost')
+    );
+
+    const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+      (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
 
     console.log('Fetching data from API:', API_URL);
 
@@ -158,7 +167,13 @@ export default function Home() {
 
     try {
       // Save to database first
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-website-i30p.onrender.com/api';
+      const isLocalhost = typeof window !== 'undefined' && (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.includes('localhost')
+      );
+      const API_URL = process.env.NEXT_PUBLIC_API_URL ||
+        (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
       const contactData = {
         name: formData.get('from_name'),
         email: formData.get('from_email'),
@@ -449,13 +464,32 @@ export default function Home() {
                 className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group"
               >
                 {/* Project Screenshot */}
-                <div className="mb-4 bg-green-900/20 border border-green-400/30 rounded-none overflow-hidden h-48">
+                <div className="mb-4 bg-green-900/20 border border-green-400/30 rounded-none overflow-hidden h-48 relative">
                   {project.screenshot ? (
-                    <img
-                      src={project.screenshot}
-                      alt={project.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
+                    <>
+                      <img
+                        src={
+                          project.screenshot.startsWith('http')
+                            ? project.screenshot
+                            : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${project.screenshot.startsWith('/') ? '' : '/'}${project.screenshot}`
+                        }
+                        alt={`${project.title} screenshot`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                        onError={(e) => {
+                          // Hide broken image icon by replacing with placeholder
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent && !parent.querySelector('.error-placeholder')) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'error-placeholder w-full h-full flex items-center justify-center';
+                            placeholder.innerHTML = '<div class="text-center p-4"><i class="ri-image-line text-4xl text-green-400/50 mb-2 block"></i><p class="text-xs text-green-400/60">Image unavailable</p></div>';
+                            parent.appendChild(placeholder);
+                          }
+                        }}
+                      />
+                    </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="text-center p-4">
@@ -486,7 +520,14 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="inline-flex items-center text-green-400 hover:text-green-200 transition-colors duration-300 whitespace-nowrap font-bold"
+                  >
+                    <i className="ri-file-info-line mr-2 w-4 h-4 flex items-center justify-center"></i>
+                    [VIEW_DETAILS]
+                  </button>
                   {project.link && project.link !== '#' && (
                     <a
                       href={project.link}
@@ -819,10 +860,228 @@ export default function Home() {
             © 2024 Aadil Khan | IT Consultant • Developer • Ethical Hacker
           </p>
           <p className="text-green-500 text-sm mt-2">
-            "Building secure, scalable solutions for the digital world."
           </p>
         </div>
       </footer>
+
+      {/* Project Details Modal */}
+      {selectedProject && (
+        <div
+          className="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] overflow-y-auto"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="min-h-screen px-4 py-20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="container mx-auto max-w-5xl">
+              <div className="bg-black/80 border-2 border-green-400 rounded-none p-8 relative">
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 text-green-400 hover:text-green-200 text-3xl transition-colors duration-300"
+                >
+                  <i className="ri-close-line"></i>
+                </button>
+
+                {/* Header */}
+                <div className="mb-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <h2 className="text-3xl md:text-4xl font-bold text-green-300">
+                      <span className="text-green-400">&gt;</span> {selectedProject.title}
+                    </h2>
+                    <span className={`text-xs px-3 py-1 rounded-none ${selectedProject.status === 'Deployed' || selectedProject.status === 'Active'
+                      ? 'bg-green-400 text-black'
+                      : selectedProject.status === 'Development'
+                        ? 'bg-yellow-400 text-black'
+                        : 'bg-green-400/20 text-green-400'
+                      }`}>
+                      {selectedProject.status}
+                    </span>
+                  </div>
+
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {selectedProject.tech?.map((tech: string) => (
+                      <span key={tech} className="text-xs bg-green-900/30 text-green-300 px-3 py-1 rounded-none border border-green-400/30">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 flex-wrap mt-4">
+                    {selectedProject.link && selectedProject.link !== '#' && (
+                      <a
+                        href={selectedProject.link}
+                        target={selectedProject.linkType === 'website' ? '_blank' : undefined}
+                        rel={selectedProject.linkType === 'website' ? 'noopener noreferrer' : undefined}
+                        download={selectedProject.linkType === 'apk' ? true : undefined}
+                        className="inline-flex items-center bg-green-400 text-black px-6 py-3 rounded-none hover:bg-green-300 transition-all duration-300 font-bold"
+                      >
+                        <i className={`${selectedProject.linkType === 'website' ? 'ri-external-link-line' : 'ri-download-line'} mr-2`}></i>
+                        [{selectedProject.linkType === 'website' ? 'LAUNCH_PROJECT' : 'DOWNLOAD_APK'}]
+                      </a>
+                    )}
+                    <a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center border-2 border-green-400 text-green-400 px-6 py-3 rounded-none hover:bg-green-400 hover:text-black transition-all duration-300 font-bold"
+                    >
+                      <i className="ri-github-line mr-2"></i>
+                      [VIEW_GITHUB]
+                    </a>
+                  </div>
+                </div>
+
+                {/* Main Screenshot */}
+                {selectedProject.screenshot && (
+                  <div className="mb-8 border border-green-400/30 rounded-none overflow-hidden">
+                    <img
+                      src={
+                        selectedProject.screenshot.startsWith('http')
+                          ? selectedProject.screenshot
+                          : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${selectedProject.screenshot.startsWith('/') ? '' : '/'}${selectedProject.screenshot}`
+                      }
+                      alt={selectedProject.title}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                )}
+
+                {/* Project Info Grid */}
+                {(selectedProject.role || selectedProject.client || selectedProject.teamSize || selectedProject.duration || selectedProject.completionTime) && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 p-6 bg-green-900/10 border border-green-400/30 rounded-none">
+                    {selectedProject.role && (
+                      <div>
+                        <div className="text-green-400 text-xs mb-1">ROLE</div>
+                        <div className="text-green-200">{selectedProject.role}</div>
+                      </div>
+                    )}
+                    {selectedProject.client && (
+                      <div>
+                        <div className="text-green-400 text-xs mb-1">CLIENT</div>
+                        <div className="text-green-200">{selectedProject.client}</div>
+                      </div>
+                    )}
+                    {selectedProject.teamSize && (
+                      <div>
+                        <div className="text-green-400 text-xs mb-1">TEAM_SIZE</div>
+                        <div className="text-green-200">{selectedProject.teamSize}</div>
+                      </div>
+                    )}
+                    {selectedProject.duration && (
+                      <div>
+                        <div className="text-green-400 text-xs mb-1">DURATION</div>
+                        <div className="text-green-200">{selectedProject.duration}</div>
+                      </div>
+                    )}
+                    {selectedProject.completionTime && (
+                      <div>
+                        <div className="text-green-400 text-xs mb-1">TIME_INVESTED</div>
+                        <div className="text-green-200">{selectedProject.completionTime}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Description */}
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                    <i className="ri-file-text-line mr-2"></i>
+                    PROJECT_OVERVIEW
+                  </h3>
+                  <p className="text-green-200 leading-relaxed whitespace-pre-line">
+                    {selectedProject.longDescription || selectedProject.description}
+                  </p>
+                </div>
+
+                {/* Work Done */}
+                {selectedProject.workDone && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                      <i className="ri-code-s-slash-line mr-2"></i>
+                      WORK_COMPLETED
+                    </h3>
+                    <p className="text-green-200 leading-relaxed whitespace-pre-line">
+                      {selectedProject.workDone}
+                    </p>
+                  </div>
+                )}
+
+                {/* Features */}          {selectedProject.features && selectedProject.features.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                      <i className="ri-checkbox-multiple-line mr-2"></i>
+                      KEY_FEATURES
+                    </h3>
+                    <ul className="space-y-2">
+                      {selectedProject.features.map((feature: string, idx: number) => (
+                        <li key={idx} className="text-green-200 flex items-start">
+                          <span className="text-green-400 mr-2">▸</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Challenges */}
+                {selectedProject.challenges && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                      <i className="ri-alert-line mr-2"></i>
+                      CHALLENGES_FACED
+                    </h3>
+                    <p className="text-green-200 leading-relaxed whitespace-pre-line">
+                      {selectedProject.challenges}
+                    </p>
+                  </div>
+                )}
+
+                {/* Learnings */}
+                {selectedProject.learnings && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                      <i className="ri-lightbulb-line mr-2"></i>
+                      LEARNINGS_TAKEAWAYS
+                    </h3>
+                    <p className="text-green-200 leading-relaxed whitespace-pre-line">
+                      {selectedProject.learnings}
+                    </p>
+                  </div>
+                )}
+
+                {/* Additional Screenshots */}
+                {selectedProject.additionalScreenshots && selectedProject.additionalScreenshots.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                      <i className="ri-gallery-line mr-2"></i>
+                      ADDITIONAL_SCREENSHOTS
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {selectedProject.additionalScreenshots.map((screenshot: string, idx: number) => (
+                        <div key={idx} className="border border-green-400/30 rounded-none overflow-hidden">
+                          <img
+                            src={
+                              screenshot.startsWith('http')
+                                ? screenshot
+                                : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${screenshot.startsWith('/') ? '' : '/'}${screenshot}`
+                            }
+                            alt={`${selectedProject.title} screenshot ${idx + 1}`}
+                            className="w-full h-auto"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
