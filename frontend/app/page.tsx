@@ -35,9 +35,9 @@ export default function Home() {
 
   // Fetch data from API
   useEffect(() => {
-    const API_URL = 'http://localhost:5000/api';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-website-i30p.onrender.com/api';
 
-    console.log('Fetching data from API...');
+    console.log('Fetching data from API:', API_URL);
 
     Promise.all([
       fetch(`${API_URL}/profile`)
@@ -158,6 +158,7 @@ export default function Home() {
 
     try {
       // Save to database first
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-website-i30p.onrender.com/api';
       const contactData = {
         name: formData.get('from_name'),
         email: formData.get('from_email'),
@@ -165,7 +166,7 @@ export default function Home() {
         message: formData.get('message')
       };
 
-      await fetch('http://localhost:5000/api/contact', {
+      await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(contactData)
@@ -447,13 +448,22 @@ export default function Home() {
                 key={index}
                 className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group"
               >
-                {/* Screenshot Placeholder */}
-                <div className="mb-4 bg-green-900/20 border border-green-400/30 rounded-none overflow-hidden h-48 flex items-center justify-center">
-                  <div className="text-center p-4">
-                    <i className="ri-image-line text-4xl text-green-400/50 mb-2 block"></i>
-                    <p className="text-xs text-green-400/60">Screenshot Placeholder</p>
-                    <p className="text-xs text-green-500/40 mt-1">{project.screenshot}</p>
-                  </div>
+                {/* Project Screenshot */}
+                <div className="mb-4 bg-green-900/20 border border-green-400/30 rounded-none overflow-hidden h-48">
+                  {project.screenshot ? (
+                    <img
+                      src={project.screenshot}
+                      alt={project.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-center p-4">
+                        <i className="ri-image-line text-4xl text-green-400/50 mb-2 block"></i>
+                        <p className="text-xs text-green-400/60">No Screenshot</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-bold text-green-300 group-hover:text-green-200">

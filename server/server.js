@@ -18,7 +18,9 @@ app.use(morgan('dev'));
 app.use(cors({
     origin: [
         process.env.FRONTEND_URL || 'https://aadil.chillingon.com',
-        process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app'
+        process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app',
+        'http://localhost:3000',  // Local Next.js frontend
+        'http://localhost:3001'   // Alternative local port
     ],
     credentials: true
 }));
