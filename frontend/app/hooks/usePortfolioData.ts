@@ -34,26 +34,16 @@ export interface UsePortfolioDataReturn {
  * - Retries on failure (handles Render cold starts)
  */
 export function usePortfolioData(): UsePortfolioDataReturn {
-    const [data, setData] = useState<PortfolioData>(() => {
-        // Try to load cached data immediately on mount
-        const cachedProfile = getCachedData('profile');
-        const cachedAbout = getCachedData('about');
-        const cachedSkills = getCachedData('skills');
-        const cachedTools = getCachedData('tools');
-        const cachedProjects = getCachedData('projects');
-        const cachedCertifications = getCachedData('certifications');
-        const cachedBlogs = getCachedData('blog');
-
-        // If we have cached data, use it; otherwise use defaults
-        return {
-            profile: cachedProfile || DEFAULT_DATA.profile,
-            about: cachedAbout || DEFAULT_DATA.about,
-            skills: cachedSkills || DEFAULT_DATA.skills,
-            tools: cachedTools || DEFAULT_DATA.tools,
-            projects: cachedProjects || DEFAULT_DATA.projects,
-            certifications: cachedCertifications || DEFAULT_DATA.certifications,
-            blogs: cachedBlogs || DEFAULT_DATA.blogs,
-        };
+    // IMPORTANT: Always initialize with DEFAULT_DATA to prevent hydration errors
+    // Don't access localStorage here - it only exists on client, not during SSR
+    const [data, setData] = useState<PortfolioData>({
+        profile: DEFAULT_DATA.profile,
+        about: DEFAULT_DATA.about,
+        skills: DEFAULT_DATA.skills,
+        tools: DEFAULT_DATA.tools,
+        projects: DEFAULT_DATA.projects,
+        certifications: DEFAULT_DATA.certifications,
+        blogs: DEFAULT_DATA.blogs,
     });
 
     const [isLoading, setIsLoading] = useState(true);
@@ -65,7 +55,7 @@ export function usePortfolioData(): UsePortfolioDataReturn {
             setIsLoading(true);
             setError(null);
 
-            const result = await fetchAllPortfolioData();
+            const result = await fetchAllPortfolioData({ forceRefresh });
 
             // Update state with fresh data
             setData({
@@ -91,9 +81,10 @@ export function usePortfolioData(): UsePortfolioDataReturn {
         }
     }, []);
 
-    // Fetch data on mount
+    // Fetch data on mount - ALWAYS force fresh on page load/reload
+    // This runs only on client (after hydration), preventing hydration mismatch
     useEffect(() => {
-        fetchData();
+        fetchData(true); // Force refresh to always get latest data on page load
     }, [fetchData]);
 
     // Refresh function for manual updates

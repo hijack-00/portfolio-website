@@ -183,7 +183,9 @@ export const fetchFromAPI = async (
 };
 
 // Fetch all portfolio data
-export const fetchAllPortfolioData = async (): Promise<{
+export const fetchAllPortfolioData = async (options: {
+    forceRefresh?: boolean;
+} = {}): Promise<{
     profile: any;
     about: any;
     skills: any[];
@@ -193,11 +195,12 @@ export const fetchAllPortfolioData = async (): Promise<{
     blogs: any[];
     fromCache: boolean[];
 }> => {
+    const { forceRefresh = false } = options;
     const endpoints = ['profile', 'about', 'skills', 'tools', 'projects', 'certifications', 'blog'];
 
     const results = await Promise.all(
         endpoints.map(endpoint =>
-            fetchFromAPI(endpoint).catch(error => {
+            fetchFromAPI(endpoint, { forceRefresh }).catch(error => {
                 console.error(`Error fetching ${endpoint}:`, error);
                 return { data: null, fromCache: false, timestamp: Date.now() };
             })

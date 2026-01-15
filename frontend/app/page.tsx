@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import emailjs from '@emailjs/browser';
 import ParticlesBackground from './components/ParticlesBackground';
 import DataStatusIndicator from './components/DataStatusIndicator';
@@ -18,6 +19,7 @@ export default function Home() {
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const router = useRouter();
 
   // Use the new portfolio data hook with stale-while-revalidate
   const { data, isLoading, fromCache, error, refresh } = usePortfolioData();
@@ -633,6 +635,7 @@ export default function Home() {
             {blogs.map((post, index) => (
               <div
                 key={index}
+                onClick={() => router.push(`/blog/${post.slug}`)}
                 className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-4">
