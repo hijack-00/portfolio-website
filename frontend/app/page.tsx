@@ -420,38 +420,38 @@ export default function Home() {
                 key={index}
                 className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group"
               >
-                {/* Project Screenshot */}
+                {/* Project Screenshot - Shows placeholder by default, image on hover */}
                 <div className="mb-4 bg-green-900/20 border border-green-400/30 rounded-none overflow-hidden h-48 relative">
+                  {/* Placeholder - Always visible, hidden on group hover */}
+                  <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-green-900/20 group-hover:opacity-0 transition-opacity duration-300 z-10">
+                    <div className="text-center p-4">
+                      <i className="ri-folder-image-line text-5xl text-green-400/50 mb-2 block animate-pulse"></i>
+                      <p className="text-xs text-green-400/60">Hover to preview</p>
+                    </div>
+                  </div>
+
+                  {/* Actual Image - Hidden by default, visible on group hover */}
                   {project.screenshot ? (
-                    <>
-                      <img
-                        src={
-                          project.screenshot.startsWith('http')
-                            ? project.screenshot
-                            : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${project.screenshot.startsWith('/') ? '' : '/'}${project.screenshot}`
-                        }
-                        alt={`${project.title} screenshot`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                        onError={(e) => {
-                          // Hide broken image icon by replacing with placeholder
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent && !parent.querySelector('.error-placeholder')) {
-                            const placeholder = document.createElement('div');
-                            placeholder.className = 'error-placeholder w-full h-full flex items-center justify-center';
-                            placeholder.innerHTML = '<div class="text-center p-4"><i class="ri-image-line text-4xl text-green-400/50 mb-2 block"></i><p class="text-xs text-green-400/60">Image unavailable</p></div>';
-                            parent.appendChild(placeholder);
-                          }
-                        }}
-                      />
-                    </>
+                    <img
+                      src={
+                        project.screenshot.startsWith('http')
+                          ? project.screenshot
+                          : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${project.screenshot.startsWith('/') ? '' : '/'}${project.screenshot}`
+                      }
+                      alt={`${project.title} screenshot`}
+                      className="w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                      loading="lazy"
+                      onError={(e) => {
+                        // Hide broken image and show error in placeholder area
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-full h-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="text-center p-4">
                         <i className="ri-image-line text-4xl text-green-400/50 mb-2 block"></i>
-                        <p className="text-xs text-green-400/60">No Screenshot</p>
+                        <p className="text-xs text-green-400/60">No Screenshot Available</p>
                       </div>
                     </div>
                   )}
