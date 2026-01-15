@@ -8,9 +8,12 @@ export function generateStaticParams() {
     }));
 }
 
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    // Await params as required by Next.js 15
+    const { slug } = await params;
+
     // Find the blog post by slug
-    const blog = DEFAULT_DATA.blogs.find((b: any) => b.slug === params.slug);
+    const blog = DEFAULT_DATA.blogs.find((b: any) => b.slug === slug);
 
     return <BlogDetailClient blog={blog} />;
 }
