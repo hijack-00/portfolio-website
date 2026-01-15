@@ -1,227 +1,251 @@
-# 🚀 Quick Deployment Steps for Hostinger
+# 🚀 Quick Start: Deploy with Fresh Data
 
-## What's Ready:
-✅ Static site built in the `out` folder
-✅ .htaccess file configured for optimal performance
-✅ All files optimized and ready to upload
+## One-Command Deployment
 
----
+```bash
+cd frontend
+npm run build
+```
 
-## 📤 Upload to Hostinger - Step by Step
-
-### Method 1: File Manager (Easiest)
-
-1. **Login to Hostinger**
-   - Go to https://hpanel.hostinger.com
-   - Enter your credentials
-
-2. **Access File Manager**
-   - Click on "File Manager" in hPanel
-   - Navigate to your subdomain folder
-   - Usually: `public_html/subdomain_name/` or `domains/subdomain.domain.com/public_html/`
-
-3. **Clear Existing Files** (if any)
-   - Select all files in the subdomain folder
-   - Delete them
-
-4. **Upload Files**
-   - Click "Upload Files" button
-   - Select ALL files from the `out` folder:
-     ```
-     d:\Development\generated\hacker_theme\out\
-     ```
-   - Upload:
-     - index.html
-     - 404.html
-     - .htaccess
-     - _next (entire folder)
-     - index.txt
-     - Any other files/folders
-
-5. **Set Permissions** (if needed)
-   - Right-click files → Permissions
-   - Files: 644
-   - Folders: 755
-
-6. **Test Your Site**
-   - Visit: https://yoursubdomain.yourdomain.com
-   - Should see your portfolio!
+That's it! The `prebuild` script automatically fetches latest data.
 
 ---
 
-### Method 2: FTP (Recommended for Large Files)
-
-1. **Get FTP Credentials**
-   - In hPanel, go to "Files → FTP Accounts"
-   - Note down:
-     - Hostname: `ftp.yourdomain.com`
-     - Username: (your FTP username)
-     - Password: (your FTP password)
-     - Port: 21
-
-2. **Download FileZilla**
-   - Download from: https://filezilla-project.org
-   - Install and open
-
-3. **Connect to Hostinger**
-   - Host: `ftp.yourdomain.com`
-   - Username: `your_ftp_username`
-   - Password: `your_ftp_password`
-   - Port: 21
-   - Click "Quickconnect"
-
-4. **Navigate to Subdomain Folder**
-   - In remote site (right panel)
-   - Go to subdomain directory
-
-5. **Upload Files**
-   - In local site (left panel), navigate to:
-     ```
-     d:\Development\generated\hacker_theme\out\
-     ```
-   - Select all files and folders
-   - Drag to remote site (right panel)
-   - Wait for upload to complete
-
-6. **Verify Upload**
-   - Check all files transferred successfully
-   - Visit your subdomain URL
-
----
-
-## 🌐 Setup Subdomain (if not already done)
-
-1. **Create Subdomain in Hostinger**
-   - Go to hPanel → Domains → Subdomains
-   - Click "Create Subdomain"
-   - Enter subdomain name (e.g., `portfolio`)
-   - For domain: select your main domain
-   - Document root: leave default or specify folder
-   - Click "Create"
-
-2. **Wait for DNS Propagation**
-   - Usually takes 5-15 minutes
-   - Sometimes up to 24 hours
-
----
-
-## 🔒 Enable SSL (HTTPS)
-
-1. **Activate SSL in hPanel**
-   - Go to Security → SSL
-   - Select your subdomain
-   - Click "Install SSL"
-   - Choose "Free SSL" (Let's Encrypt)
-   - Wait for activation (5-15 minutes)
-
-2. **Verify HTTPS**
-   - Visit: https://yoursubdomain.yourdomain.com
-   - Should show padlock in browser
-
-3. **.htaccess Already Configured**
-   - The .htaccess file already forces HTTPS redirect
-   - HTTP requests auto-redirect to HTTPS
-
----
-
-## ✅ Post-Deployment Checklist
-
-- [ ] All files uploaded to subdomain folder
-- [ ] index.html is in root of subdomain
-- [ ] .htaccess file is present
-- [ ] Site loads at subdomain URL
-- [ ] HTTPS/SSL is active
-- [ ] All animations work (typing effect, matrix rain)
-- [ ] Navigation scrolls properly
-- [ ] Mobile responsive
-- [ ] All sections visible
-- [ ] Contact form styled correctly
-- [ ] 404 page works (try invalid URL)
-
----
-
-## 🔄 Future Updates
-
-When you make changes to your portfolio:
-
-1. **Edit Files Locally**
-   - Make changes in your code
-
-2. **Test Changes**
-   ```powershell
-   npm run dev
-   ```
-
-3. **Build New Version**
-   ```powershell
-   powershell -ExecutionPolicy Bypass -Command "npm run build"
-   ```
-
-4. **Upload New Files**
-   - Upload contents of `out` folder to Hostinger
-   - Overwrite existing files
-
-5. **Clear Cache**
-   - Clear browser cache
-   - Test the site
-
----
-
-## 🆘 Troubleshooting
-
-### Site Shows "Index of /" or Directory Listing
-**Fix**: Ensure `index.html` is in the correct folder and `.htaccess` Options -Indexes is present
-
-### 404 on Refresh or Direct Links
-**Fix**: Check that `.htaccess` file is uploaded and rewrite rules are active
-
-### Assets Not Loading (Broken CSS/Images)
-**Fix**: 
-- Check file permissions (644 for files, 755 for folders)
-- Verify `_next` folder uploaded completely
-- Check browser console for errors
-
-### HTTPS Not Working
-**Fix**:
-- Wait longer (SSL activation can take time)
-- Check SSL is installed in hPanel
-- Force HTTPS in .htaccess (already included)
-
-### Slow Loading
-**Fix**: Already optimized with:
-- GZIP compression in .htaccess
-- Browser caching enabled
-- Static export (no server processing)
-
----
-
-## 📞 Support
-
-**Hostinger Support**: Available 24/7
-- Live Chat: In hPanel bottom-right
-- Email: support@hostinger.com
-- Knowledge Base: help.hostinger.com
-
----
-
-## 🎉 Your Site Structure After Upload
+## What Happens
 
 ```
-subdomain.yourdomain.com/
-├── .htaccess              (Apache config)
-├── index.html             (Main page)
-├── 404.html               (Error page)
-├── index.txt              (Build info)
-└── _next/                 (Next.js assets)
-    ├── static/
-    │   ├── css/
-    │   ├── chunks/
-    │   └── media/
-    └── ...
+npm run build
+    ↓
+AUTO: npm run fetch-data
+    ↓
+Fetching from Render... (may take 30-40s for cold start)
+    ↓
+✅ Updated defaultData.ts
+    ↓
+Building Next.js...
+    ↓
+Ready to deploy!
 ```
 
 ---
 
-**Ready to deploy! 🚀 Just follow the steps above!**
+## Verify Fresh Data
 
-All files in the `out` folder are production-ready and optimized.
+```bash
+# Check last update timestamp
+grep "Last updated" app/utils/defaultData.ts
+
+# Should show recent timestamp, like:
+# Last updated: 2026-01-15T05:57:43.694Z
+```
+
+---
+
+## Deploy to Hostinger
+
+### Option 1: FTP/File Manager
+1. Build: `npm run build`
+2. Upload `out/` folder to Hostinger
+3. Done!
+
+### Option 2: Git Deploy (if configured)
+```bash
+npm run build
+git add .
+git commit -m "Deploy with fresh data"
+git push
+```
+
+### Option 3: Automated (GitHub Actions)
+1. Push code to GitHub
+2. GitHub Actions runs daily
+3. Auto-fetches and commits fresh data
+4. Webhook triggers deployment (if configured)
+
+---
+
+## Manual Data Update (Without Building)
+
+```bash
+# Just update the data file
+npm run fetch-data
+
+# Check what changed
+git diff app/utils/defaultData.ts
+
+# Commit if needed
+git add app/utils/defaultData.ts
+git commit -m "Update portfolio data"
+```
+
+---
+
+## Troubleshooting
+
+### Data fetch fails?
+```bash
+# Check API is accessible
+curl https://portfolio-website-i30p.onrender.com/api/profile
+
+# Or manually fetch
+npm run fetch-data
+```
+
+### Want force fresh build?
+```bash
+# Explicitly run both steps
+npm run build:fresh
+```
+
+### Check build status
+```bash
+npm run build 2>&1 | tee build.log
+```
+
+---
+
+## First Deployment Checklist
+
+- [x] ✅ Run `npm run build` to fetch data and build
+- [ ] ⏳ Verify `defaultData.ts` has recent timestamp
+- [ ] ⏳ Test locally first: `npm run dev`
+- [ ] ⏳ Upload/deploy to Hostinger
+- [ ] ⏳ Test production site
+- [ ] ⏳ Verify data loads instantly
+- [ ] ⏳ Check status indicator appears  
+- [ ] ⏳ Set up GitHub Actions (optional)
+
+---
+
+## GitHub Actions Setup (Optional)
+
+### Already done! ✅
+File: `.github/workflows/update-portfolio-data.yml`
+
+### What it does:
+- Runs daily at 2 AM UTC
+- Fetches latest data
+- Commits if changed
+- Can trigger deploy webhook
+
+### To enable:
+1. Push code to GitHub
+2. Go to Actions tab
+3. Enable workflows
+4. (Optional) Add `DEPLOY_WEBHOOK_URL` secret
+
+### Manual trigger:
+1. GitHub repo → Actions tab
+2. "Update Portfolio Data" workflow
+3. "Run workflow" button
+4. Enter reason (optional)
+5. Run!
+
+---
+
+## Testing Your Deployment
+
+### Test 1: Initial Load
+```
+1. Open incognito window
+2. Visit your site
+3. Should see content instantly (<100ms)
+4. Check status indicator (top-right)
+```
+
+### Test 2: Verify Real Data
+```
+1. Look at projects, skills, etc.
+2. Should match your Render backend data
+3. Not placeholders or "Loading..."
+```
+
+### Test 3: Browser Cache
+```
+1. Reload page (F5)
+2. Should load even faster
+3. Status shows "Using cached data"
+4. Background fetch updates it
+```
+
+---
+
+## Maintenance
+
+### Update data before important deployment:
+```bash
+npm run fetch-data
+npm run build
+# Deploy
+```
+
+### Set up automatic updates:
+GitHub Actions will handle it daily!
+
+### Emergency data refresh:
+```bash
+npm run fetch-data
+git add app/utils/defaultData.ts
+git commit -m "Emergency data update"
+git push
+```
+
+---
+
+## Environment Variables
+
+### Optional: Custom API URL
+```bash
+# .env.local
+NEXT_PUBLIC_API_URL=https://your-api.com/api
+```
+
+### For GitHub Actions:
+Add to repo secrets:
+- `API_URL` (optional)
+- `DEPLOY_WEBHOOK_URL` (optional)
+
+---
+
+## Common Commands
+
+| Command | Purpose |
+|---------|---------|
+| `npm run fetch-data` | Update defaultData.ts from server |
+| `npm run build` | Auto-fetch + build |
+| `npm run build:fresh` | Explicit fetch + build |
+| `npm run dev` | Test locally |
+
+---
+
+## Success Indicators
+
+✅ Build completes without errors  
+✅ `defaultData.ts` has recent timestamp  
+✅ File contains real data, not placeholders  
+✅ Local test shows instant load  
+✅ Production site loads fast  
+✅ Status indicator works  
+✅ Data matches backend  
+
+---
+
+## Need Help?
+
+📚 **Full guides:**
+- `BUILD_TIME_FETCH_GUIDE.md` - Build-time fetching
+- `STALE_WHILE_REVALIDATE_GUIDE.md` - Browser caching
+- `TESTING_CHECKLIST.md` - Complete testing
+
+💡 **Quick reference:**
+- `SWR_QUICK_REFERENCE.md`
+
+🐛 **Debug tools:**
+- Browser console → paste `/public/cache-debug.js`
+- `portfolioDebug.help()`
+
+---
+
+**You're all set! Happy deploying! 🚀**
+
+*Remember: Every build now includes fresh server data automatically!*

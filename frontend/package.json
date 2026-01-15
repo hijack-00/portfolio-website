@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
+    "prebuild": "npm run fetch-data",
+    "fetch-data": "node scripts/fetch-latest-data.js",
+    "build:fresh": "npm run fetch-data && npm run build",
     "lint": "next lint"
   },
   "dependencies": {

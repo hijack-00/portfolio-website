@@ -1,0 +1,74 @@
+name: Update Portfolio Data
+
+# Automatically fetch latest data from server and deploy
+# Runs daily and can be triggered manually
+
+on:
+  schedule:
+    # Run every day at 2 AM UTC (7:30 AM IST)
+    - cron: '0 2 * * *'
+  
+  workflow_dispatch:  # Allow manual trigger
+    inputs:
+      reason:
+        description: 'Reason for manual update'
+        required: false
+        default: 'Manual data refresh'
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      - name: Fetch latest data from server
+        working-directory: ./frontend
+        run: npm run fetch-data
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.API_URL || 'https://portfolio-website-i30p.onrender.com/api' }}
+      
+      - name: Check if data changed
+        id: check-changes
+        run: |
+          git diff --quiet frontend/app/utils/defaultData.ts || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add frontend/app/utils/defaultData.ts
+          git commit -m "chore: auto-update default portfolio data [skip ci]"
+          git push
+      
+      - name: Trigger deployment (if using Vercel/Hostinger webhook)
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          echo "✅ Data updated! Deployment will be triggered automatically."
+          # Uncomment and add your deployment webhook if needed:
+          # curl -X POST ${{ secrets.DEPLOY_WEBHOOK_URL }}
+      
+      - name: Summary
+        run: |
+          if [ "${{ steps.check-changes.outputs.changed }}" == "true" ]; then
+            echo "✅ Portfolio data updated successfully!"
+            echo "🚀 Changes committed and pushed to repository"
+            echo "📦 Next deployment will include fresh data"
+          else
+            echo "ℹ️  No changes detected - data is already up to date"
+          fi

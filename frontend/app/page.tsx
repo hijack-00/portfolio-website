@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import emailjs from '@emailjs/browser';
 import ParticlesBackground from './components/ParticlesBackground';
+import DataStatusIndicator from './components/DataStatusIndicator';
+import { usePortfolioData } from './hooks/usePortfolioData';
 
 export default function Home() {
   const [typedText, setTypedText] = useState('');
@@ -15,16 +17,13 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
-
-  // API Data
-  const [profile, setProfile] = useState<any>(null);
-  const [about, setAbout] = useState<any>(null);
-  const [skills, setSkills] = useState<any[]>([]);
-  const [tools, setTools] = useState<any[]>([]);
-  const [projects, setProjects] = useState<any[]>([]);
-  const [certifications, setCertifications] = useState<any[]>([]);
-  const [blogs, setBlogs] = useState<any[]>([]);
   const [selectedProject, setSelectedProject] = useState<any>(null);
+
+  // Use the new portfolio data hook with stale-while-revalidate
+  const { data, isLoading, fromCache, error, refresh } = usePortfolioData();
+
+  // Destructure data for easier access
+  const { profile, about, skills, tools, projects, certifications, blogs } = data;
 
   const texts = profile?.typingTexts || [
     'Initializing systems...',
@@ -34,57 +33,8 @@ export default function Home() {
     'Building innovative solutions...'
   ];
 
-  // Fetch data from API
-  useEffect(() => {
-    // TEMPORARY: Using live backend because local MongoDB is empty
-    // Uncomment below for auto-detection when local DB has data
-
-    // const isLocalhost = typeof window !== 'undefined' && (
-    //   window.location.hostname === 'localhost' ||
-    //   window.location.hostname === '127.0.0.1' ||
-    //   window.location.hostname.includes('localhost')
-    // );
-    // const API_URL = process.env.NEXT_PUBLIC_API_URL ||
-    //   (isLocalhost ? 'http://localhost:5000/api' : 'https://portfolio-website-i30p.onrender.com/api');
-
-    // Always use live backend for now
-    const API_URL = 'https://portfolio-website-i30p.onrender.com/api';
-
-    console.log('Fetching data from API:', API_URL);
-
-    Promise.all([
-      fetch(`${API_URL}/profile`)
-        .then(r => r.json())
-        .then(d => { console.log('Profile data:', d); setProfile(d); })
-        .catch(err => console.error('Profile fetch error:', err)),
-      fetch(`${API_URL}/about`)
-        .then(r => r.json())
-        .then(d => { console.log('About data:', d); setAbout(d); })
-        .catch(err => console.error('About fetch error:', err)),
-      fetch(`${API_URL}/skills`)
-        .then(r => r.json())
-        .then(d => { console.log('Skills data:', d); setSkills(d || []); })
-        .catch(err => console.error('Skills fetch error:', err)),
-      fetch(`${API_URL}/tools`)
-        .then(r => r.json())
-        .then(d => { console.log('Tools data:', d); setTools(d || []); })
-        .catch(err => console.error('Tools fetch error:', err)),
-      fetch(`${API_URL}/projects`)
-        .then(r => r.json())
-        .then(d => { console.log('Projects data:', d); setProjects(d || []); })
-        .catch(err => console.error('Projects fetch error:', err)),
-      fetch(`${API_URL}/certifications`)
-        .then(r => r.json())
-        .then(d => { console.log('Certifications data:', d); setCertifications(d || []); })
-        .catch(err => console.error('Certifications fetch error:', err)),
-      fetch(`${API_URL}/blog`)
-        .then(r => r.json())
-        .then(d => { console.log('Blog data:', d); setBlogs(d || []); })
-        .catch(err => console.error('Blog fetch error:', err))
-    ]);
-  }, []);
-
   const sections = ['home', 'about-me', 'skills', 'tools', 'projects', 'certifications', 'blog', 'contact'];
+
 
   useEffect(() => {
     const generateMatrixCode = () => {
@@ -237,6 +187,13 @@ export default function Home() {
 
       {/* Particles Background */}
       <ParticlesBackground />
+
+      {/* Data Status Indicator */}
+      <DataStatusIndicator
+        isLoading={isLoading}
+        fromCache={fromCache}
+        onRefresh={refresh}
+      />
 
       {/* Mobile-Responsive Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-green-400/40">
