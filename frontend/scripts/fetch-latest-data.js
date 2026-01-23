@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://portfolio-website-i30p.onrender.com/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.aadilkhan.site/api';
 const OUTPUT_FILE = path.join(__dirname, '../app/utils/defaultData.ts');
 
 // Retry fetch with exponential backoff

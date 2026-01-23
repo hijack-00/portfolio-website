@@ -133,7 +133,7 @@ export default function Projects() {
                     fileData.append('file', file);
                     fileData.append('folder', 'screenshots');
 
-                    const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/upload`, {
+                    const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL || 'https://api.aadilkhan.site/api'}/upload`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('token')}`

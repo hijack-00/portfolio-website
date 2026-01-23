@@ -123,7 +123,7 @@ export default function Home() {
 
     try {
       // Save to database first (using live backend)
-      const API_URL = 'https://portfolio-website-i30p.onrender.com/api';
+      const API_URL = 'https://api.aadilkhan.site/api';
       const contactData = {
         name: formData.get('from_name'),
         email: formData.get('from_email'),
