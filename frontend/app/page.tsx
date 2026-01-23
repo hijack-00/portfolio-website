@@ -19,6 +19,8 @@ export default function Home() {
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
   const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const router = useRouter();
 
   // Use the new portfolio data hook with stale-while-revalidate
@@ -104,6 +106,29 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [sections]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightboxOpen || !selectedProject) return;
+
+      const allScreenshots = [
+        selectedProject.screenshot,
+        ...(selectedProject.additionalScreenshots || [])
+      ].filter(Boolean);
+
+      if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev - 1 + allScreenshots.length) % allScreenshots.length);
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev + 1) % allScreenshots.length);
+      } else if (e.key === 'Escape') {
+        setLightboxOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, selectedProject]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -1026,16 +1051,58 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Additional Screenshots */}
-                {selectedProject.additionalScreenshots && selectedProject.additionalScreenshots.length > 0 && (
+                {/* Screenshot Gallery */}
+                {(selectedProject.screenshot || (selectedProject.additionalScreenshots && selectedProject.additionalScreenshots.length > 0)) && (
                   <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                    <h3 className="text-2xl font-bold text-green-400 mb-2 flex items-center">
                       <i className="ri-gallery-line mr-2"></i>
-                      ADDITIONAL_SCREENSHOTS
+                      SCREENSHOT_GALLERY
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {selectedProject.additionalScreenshots.map((screenshot: string, idx: number) => (
-                        <div key={idx} className="border border-green-400/30 rounded-none overflow-hidden bg-green-900/10 min-h-[200px] flex items-center justify-center">
+                    <p className="text-green-400/60 text-sm mb-4 flex items-center">
+                      <i className="ri-cursor-line mr-2"></i>
+                      Click any image to view full size • Use arrow keys or buttons to navigate
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {/* Main Screenshot */}
+                      {selectedProject.screenshot && (
+                        <div
+                          className="border border-green-400/30 rounded-none overflow-hidden bg-green-900/10 aspect-video cursor-pointer group relative hover:border-green-400 transition-all duration-300"
+                          onClick={() => {
+                            setLightboxIndex(0);
+                            setLightboxOpen(true);
+                          }}
+                        >
+                          <img
+                            src={
+                              selectedProject.screenshot.startsWith('http')
+                                ? selectedProject.screenshot
+                                : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${selectedProject.screenshot.startsWith('/') ? '' : '/'}${selectedProject.screenshot}`
+                            }
+                            alt={`${selectedProject.title} main screenshot`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="text-center">
+                              <i className="ri-zoom-in-line text-3xl text-green-400 mb-1"></i>
+                              <p className="text-green-400 text-xs">Click to view</p>
+                            </div>
+                          </div>
+                          <div className="absolute top-2 left-2 bg-green-400 text-black text-xs px-2 py-1 font-bold">
+                            MAIN
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Additional Screenshots */}
+                      {selectedProject.additionalScreenshots?.map((screenshot: string, idx: number) => (
+                        <div
+                          key={idx}
+                          className="border border-green-400/30 rounded-none overflow-hidden bg-green-900/10 aspect-video cursor-pointer group relative hover:border-green-400 transition-all duration-300"
+                          onClick={() => {
+                            setLightboxIndex(selectedProject.screenshot ? idx + 1 : idx);
+                            setLightboxOpen(true);
+                          }}
+                        >
                           <img
                             src={
                               screenshot.startsWith('http')
@@ -1043,16 +1110,21 @@ export default function Home() {
                                 : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${screenshot.startsWith('/') ? '' : '/'}${screenshot}`
                             }
                             alt={`${selectedProject.title} screenshot ${idx + 1}`}
-                            className="w-full h-auto"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.style.display = 'none';
-                              const parent = target.parentElement;
-                              if (parent && !parent.querySelector('.error-placeholder')) {
-                                parent.innerHTML = '<div class="error-placeholder w-full h-48 flex items-center justify-center"><div class="text-center p-4"><i class="ri-image-line text-4xl text-green-400/50 mb-2 block"></i><p class="text-xs text-green-400/60">Image unavailable</p></div></div>';
-                              }
                             }}
                           />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="text-center">
+                              <i className="ri-zoom-in-line text-3xl text-green-400 mb-1"></i>
+                              <p className="text-green-400 text-xs">Click to view</p>
+                            </div>
+                          </div>
+                          <div className="absolute top-2 left-2 bg-green-400/20 text-green-400 text-xs px-2 py-1 font-bold border border-green-400/30">
+                            {idx + 1}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1060,6 +1132,85 @@ export default function Home() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && selectedProject && (
+        <div
+          className="fixed inset-0 bg-black/98 z-[200] flex items-center justify-center"
+          onClick={() => setLightboxOpen(false)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="absolute top-4 right-4 text-green-400 hover:text-green-200 text-4xl z-10 transition-colors duration-300"
+          >
+            <i className="ri-close-line"></i>
+          </button>
+
+          {/* Image counter */}
+          <div className="absolute top-4 left-4 text-green-400 text-sm z-10">
+            {lightboxIndex + 1} / {[selectedProject.screenshot, ...(selectedProject.additionalScreenshots || [])].filter(Boolean).length}
+          </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const allScreenshots = [selectedProject.screenshot, ...(selectedProject.additionalScreenshots || [])].filter(Boolean);
+              setLightboxIndex((prev) => (prev - 1 + allScreenshots.length) % allScreenshots.length);
+            }}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-green-400 hover:text-green-200 bg-black/60 hover:bg-black/80 border border-green-400/30 hover:border-green-400 p-3 md:p-4 transition-all duration-300 z-10"
+          >
+            <i className="ri-arrow-left-s-line text-2xl md:text-4xl"></i>
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const allScreenshots = [selectedProject.screenshot, ...(selectedProject.additionalScreenshots || [])].filter(Boolean);
+              setLightboxIndex((prev) => (prev + 1) % allScreenshots.length);
+            }}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-green-400 hover:text-green-200 bg-black/60 hover:bg-black/80 border border-green-400/30 hover:border-green-400 p-3 md:p-4 transition-all duration-300 z-10"
+          >
+            <i className="ri-arrow-right-s-line text-2xl md:text-4xl"></i>
+          </button>
+
+          {/* Main image */}
+          <div
+            className="max-w-[90vw] max-h-[85vh] flex items-center justify-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {(() => {
+              const allScreenshots = [selectedProject.screenshot, ...(selectedProject.additionalScreenshots || [])].filter(Boolean);
+              const currentScreenshot = allScreenshots[lightboxIndex];
+              const imgSrc = currentScreenshot?.startsWith('http')
+                ? currentScreenshot
+                : `https://pub-7af46c577d63446abc6ecb190928cff7.r2.dev${currentScreenshot?.startsWith('/') ? '' : '/'}${currentScreenshot}`;
+
+              return (
+                <img
+                  src={imgSrc}
+                  alt={`${selectedProject.title} screenshot ${lightboxIndex + 1}`}
+                  className="max-w-full max-h-[85vh] object-contain border border-green-400/30"
+                />
+              );
+            })()}
+          </div>
+
+          {/* Keyboard hint */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-green-400/60 text-xs flex items-center gap-4">
+            <span className="hidden md:flex items-center gap-1">
+              <kbd className="px-2 py-1 bg-green-400/10 border border-green-400/30 rounded-none text-green-400">←</kbd>
+              <kbd className="px-2 py-1 bg-green-400/10 border border-green-400/30 rounded-none text-green-400">→</kbd>
+              to navigate
+            </span>
+            <span className="hidden md:flex items-center gap-1">
+              <kbd className="px-2 py-1 bg-green-400/10 border border-green-400/30 rounded-none text-green-400">ESC</kbd>
+              to close
+            </span>
           </div>
         </div>
       )}
