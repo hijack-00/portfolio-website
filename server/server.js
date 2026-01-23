@@ -17,12 +17,18 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(cors({
     origin: [
+        'https://aadilkhan.site',
+        'https://www.aadilkhan.site',
+        'https://admin.aadilkhan.site',
+        'https://api.aadilkhan.site',
         process.env.FRONTEND_URL || 'https://aadil.chillingon.com',
         process.env.ADMIN_URL || 'https://portfolio-admin-weld-six.vercel.app',
-        'http://localhost:3000',  // Local Next.js frontend
-        'http://localhost:3001'   // Alternative local port
+        'http://localhost:3000',
+        'http://localhost:3001'
     ],
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
