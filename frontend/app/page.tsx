@@ -658,16 +658,16 @@ export default function Home() {
               }
             ].map((post, index) => ( */}
             {blogs.map((post, index) => (
-              <div
+              <Link
                 key={index}
-                onClick={() => router.push(`/blog/${post.slug}`)}
-                className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group cursor-pointer"
+                href={`/blog/${post.slug}`}
+                className="bg-black/60 border border-green-400/40 p-6 rounded-none hover:border-green-400 transition-all duration-300 hover:animate-pulse backdrop-blur-sm group cursor-pointer block"
               >
                 <div className="flex justify-between items-start mb-4">
                   <span className="text-xs text-green-400 bg-green-400/20 px-2 py-1 rounded-none">
                     {post.category}
                   </span>
-                  <span className="text-xs text-green-500">{post.date}</span>
+                  <span className="text-xs text-green-500">{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
                 </div>
                 <h3 className="text-xl font-bold text-green-300 group-hover:text-green-200 mb-3">
                   {post.title}
@@ -676,10 +676,10 @@ export default function Home() {
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-green-500">{post.readTime}</span>
                   <span className="text-green-400 hover:text-green-200 text-sm">
-                    [READ_MORE]
+                    [READ_MORE] →
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <div className="text-center mt-12">
